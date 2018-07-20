@@ -22,14 +22,16 @@ export class UserController {
         const email: string = req.body.email;
         const urlPict: string = req.body.urlPict;
         const description: string = req.body.description;
-        const note: number = req.body.note;
+        const firstName: string = req.body.firstName;
+        const lastName: string = req.body.lastName;
         const user = new User();
         user.username = username;
         user.keypass = keypass;
         user.email = email;
         user.urlPict = urlPict;
         user.description = description;
-        user.note = note;
+        user.firstName = firstName;
+        user.lastName = lastName;
 
         try {
             const Result = await UserService.Save(user);
@@ -47,7 +49,8 @@ export class UserController {
         const email: string = req.body.email;
         const urlPict: string = req.body.urlPict;
         const description: string = req.body.description;
-        const note: number = req.body.note;
+        const firstName: string = req.body.firstName;
+        const lastName: string = req.body.lastName;
 
         const user = await UserService.FindOneById(req.body.id);
         const userUpdate = new User();
@@ -57,7 +60,8 @@ export class UserController {
         userUpdate.email = (email ? email : user.email);
         userUpdate.urlPict = (urlPict ? urlPict : user.urlPict);
         userUpdate.description = (description ? description : user.description);
-        userUpdate.note = (note ? note : user.note);
+        userUpdate.firstName = (firstName ? firstName : user.firstName);;
+        userUpdate.lastName = (lastName ? lastName : user.lastName);;
 
         try {
             const Result = await UserService.Save(userUpdate);

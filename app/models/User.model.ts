@@ -28,9 +28,6 @@ export class User extends BaseEntity {
     @Column("text")
     public description: string;
 
-    @Column("numeric")
-    public note: number;
-
     @Column({
         type: "numeric",
         default: 1000
