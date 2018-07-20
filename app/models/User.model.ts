@@ -1,5 +1,6 @@
 import { IsEmail } from "class-validator";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { Team } from "../models/Team.model"
 
 @Entity("user")
 export class User extends BaseEntity {
@@ -33,4 +34,7 @@ export class User extends BaseEntity {
         default: 1000
     })
     public ranking: number;
+
+    @ManyToOne(type => Team, team => team.users)
+    team: Team;
 }
