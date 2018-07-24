@@ -18,6 +18,6 @@ export class UserRepository extends Repository<User> {
     }
 
     public findOneById(id: number): Promise<User> {
-        return this.manager.findOne(User, {where: {id}});
+        return this.manager.findOne(User, {where: {id}, relations: ["profiles"]});
     }
 }

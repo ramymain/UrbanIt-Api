@@ -1,6 +1,7 @@
 import { IsEmail } from "class-validator";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
 import { Team } from "../models/Team.model"
+import { Profile } from "../models/Profile.model"
 
 @Entity("user")
 export class User extends BaseEntity {
@@ -37,4 +38,7 @@ export class User extends BaseEntity {
 
     @ManyToOne(type => Team, team => team.users)
     team: Team;
+
+    @OneToMany(type => Profile, profile => profile.user)
+    profiles: Profile[];
 }

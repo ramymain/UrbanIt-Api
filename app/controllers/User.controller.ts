@@ -7,13 +7,13 @@ export class UserController {
 
     public static async All(req: express.Request, res: express.Response) {
         const UserList = await UserService.Find();
-        return res.send(UserList);
+        return res.status(200).json(UserList)
     }
 
     public static async Find(req: express.Request, res: express.Response) {
         const id: number = req.params.id;
         const user = await UserService.FindOneById(id);
-        return user ? res.status(200).send(user) : res.status(404).send({text: "NOT FOUND"});
+        return user ? res.status(200).json(user) : res.status(404).json({message: "user not found"});
     }
 
     public static async Create(req: express.Request, res: express.Response) {
@@ -35,9 +35,9 @@ export class UserController {
 
         try {
             const Result = await UserService.Save(user);
-            return res.status(200).send(Result);
+            return res.status(200).json(Result);
         } catch (ex) {
-            return res.status(404).send({text: "ERROR"});
+            return res.status(404).json({message: "server error"});
         }
     }
 
@@ -52,7 +52,7 @@ export class UserController {
         const firstName: string = req.body.firstName;
         const lastName: string = req.body.lastName;
 
-        const user = await UserService.FindOneById(req.body.id);
+        const user = await UserService.FindOneById(id);
         const userUpdate = new User();
         userUpdate.id = user.id;
         userUpdate.username = (username ? username : user.username);
@@ -65,10 +65,9 @@ export class UserController {
 
         try {
             const Result = await UserService.Save(userUpdate);
-            return Result ? res.status(200).send() : res.status(404).send({text: "NOT FOUND"});
+            return Result ? res.status(200).json(Result) : res.status(404).send({message: "user not found"});
         } catch (ex) {
-            console.log(ex);
-            return res.status(404).send({text: "ERROR"});
+            return res.status(404).json({message: "server error"});
         }
 
     }
@@ -78,9 +77,9 @@ export class UserController {
 
         try {
             await UserService.RemoveById(id);
-            return res.status(204).send();
+            return res.status(204).json({message: "correctly removed"});
         } catch (ex) {
-            return res.status(404).send({text: "ERROR"});
+            return res.status(404).json({message: "server error"});
         }
     }
 
