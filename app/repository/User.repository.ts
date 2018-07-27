@@ -20,4 +20,8 @@ export class UserRepository extends Repository<User> {
     public findOneById(id: number): Promise<User> {
         return this.manager.findOne(User, {where: {id}, relations: ["profiles"]});
     }
+
+    public find(): Promise<User[]> {
+        return this.manager.find(User, {relations: ['profiles']});
+    }
 }

@@ -3,6 +3,8 @@ import * as jwt from "express-jwt";
 import { JWTRoute } from "../app/routes/Jwt.route";
 import { UserRoute } from "../app/routes/User.route";
 import { ProfileRoute } from "../app/routes/Profile.route";
+import { MatchRoute } from "../app/routes/Match.route";
+import { TeamRoute } from "../app/routes/Team.route";
 import { config } from "../config";
 
 interface IROUTER {
@@ -29,4 +31,12 @@ export const ROUTER: IROUTER[] = [{
     handler: ProfileRoute,
     middleware: [],
     path: "/profile",
+}, {
+    handler: MatchRoute,
+    middleware: [],
+    path: "/match",
+}, {
+    handler: TeamRoute,
+    middleware: [],
+    path: "/team",
 }];

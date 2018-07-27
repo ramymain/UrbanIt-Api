@@ -22,7 +22,6 @@ describe("User route", () => {
         user.email = "email@email.com";
         user.urlPict = "urlPict";
         user.description = "description";
-        user.ranking = 1000;
 
         server.Start().then(() => {
             app = server.App();

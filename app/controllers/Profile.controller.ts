@@ -3,6 +3,7 @@ import { Profile } from "../models/Profile.model";
 import { UserService } from "../services/User.service";
 import { url } from "inspector";
 import { ProfileService } from "../services/Profile.service";
+import { TeamService } from "../services/Team.service";
 
 export class ProfileController {
 
@@ -57,6 +58,43 @@ export class ProfileController {
         } catch (ex) {
             return res.status(404).json({message: "server error"});
         }
+    }
+
+    public static async JoinTeam(req: express.Request, res: express.Response) {
+        const id: number = req.body.id;
+        const sport: string = req.body.sport;
+        const id_team: number = req.body.id_team;
+
+        const profile = await ProfileService.FindOneById(id, sport);
+        const team = await TeamService.FindOneById(id_team);
+
+        if (team.profile.length <= 0){
+            team.ranking = profile.ranking;
+        } else {
+            var sum = 0;
+            team.profile.forEach(function(element) {
+                sum += element.ranking;
+            });
+            sum += profile.ranking;
+            var averrage = sum / (team.profile.length + 1);
+            team.ranking = averrage;
+        }
+
+        try {
+            await TeamService.Save(team);
+        } catch (ex) {
+            return res.status(404).json({message: "server error"});
+        }
+
+        profile.team = team;
+
+        try {
+            const Result = await ProfileService.Save(profile);
+            return res.status(200).json(Result);
+        } catch (ex) {
+            return res.status(404).json({message: "server error"});
+        }
+
     }
 
 }

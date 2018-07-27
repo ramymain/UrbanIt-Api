@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
-import { User } from "../models/User.model"
+import { Profile } from "../models/Profile.model"
 import { Match } from "../models/Match.model"
 
 @Entity("team")
@@ -8,7 +8,7 @@ export class Team extends BaseEntity {
     public id: number;
 
     @Column()
-    public username: string;
+    public teamname: string;
 
     @Column({
         type: "numeric",
@@ -16,8 +16,8 @@ export class Team extends BaseEntity {
     })
     public ranking: number;
 
-    @OneToMany(type => User, user => user.team)
-    users: User[];
+    @OneToMany(type => Profile, profile => profile.team)
+    profile: Profile[];
 
     @ManyToOne(type => Match, match => match.teams)
     match: Match;

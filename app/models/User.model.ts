@@ -1,6 +1,5 @@
 import { IsEmail } from "class-validator";
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
-import { Team } from "../models/Team.model"
 import { Profile } from "../models/Profile.model"
 
 @Entity("user")
@@ -29,15 +28,6 @@ export class User extends BaseEntity {
 
     @Column("text")
     public description: string;
-
-    @Column({
-        type: "numeric",
-        default: 1000
-    })
-    public ranking: number;
-
-    @ManyToOne(type => Team, team => team.users)
-    team: Team;
 
     @OneToMany(type => Profile, profile => profile.user)
     profiles: Profile[];
