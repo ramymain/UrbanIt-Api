@@ -5,7 +5,6 @@ import { url } from "inspector";
 import { ProfileService } from "../services/Profile.service";
 import { TeamService } from "../services/Team.service";
 import { TeamsHelpers } from "../helpers/Teams.helpers";
-import { TeamController } from "./Team.Controller";
 
 export class ProfileController {
 
@@ -20,14 +19,14 @@ export class ProfileController {
     }
 
     public static async Create(req: express.Request, res: express.Response) {
-        const id: number = req.body.id;
+        const id_user: number = req.body.id_user;
         const sport: string = req.body.sport;
         const size: number = req.body.size;
         const weight: number = req.body.weight;
         const numero: number = req.body.numero;
         const position: string = req.body.position;
         
-        const user = await UserService.FindOneById(id);
+        const user = await UserService.FindOneById(id_user);
         const profile = new Profile();
         profile.sport = sport;
         profile.size = size;
@@ -63,10 +62,10 @@ export class ProfileController {
     }
 
     public static async JoinTeam(req: express.Request, res: express.Response) {
-        const id: number = req.body.id;
+        const id_user: number = req.body.id_user;
         const sport: string = req.body.sport;
         const id_team: number = req.body.id_team;
-        const profile = await ProfileService.FindOneById(id, sport);
+        const profile = await ProfileService.FindOneById(id_user, sport);
 
         if (id_team != null){
             const team = await TeamService.FindOneById(id_team);
