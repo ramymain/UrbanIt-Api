@@ -15,4 +15,12 @@ export class TeamService {
     public static Find(): Promise<Team[]> {
         return getCustomRepository(TeamRepository).find();
     }
+
+    public static FindBySport(sport: string): Promise<Team[]> {
+        return getCustomRepository(TeamRepository).findBySport(sport);
+    }
+
+    public static FindBySportNotFill(sport: string): Promise<Team[]> {
+        return getCustomRepository(TeamRepository).findBySportNotFill(sport);
+    }
 }

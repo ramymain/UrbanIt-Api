@@ -18,8 +18,11 @@ export class TeamController {
 
     public static async Create(req: express.Request, res: express.Response) {
         const teamname: string = req.body.teamname;
+        const sport: string = req.body.sport;
         const team = new Team();
+        console.log("GENERER UN NOM DE TEAM SI VIDE");
         team.teamname = teamname;
+        team.sport = sport;
 
         try {
             const Result = await TeamService.Save(team);

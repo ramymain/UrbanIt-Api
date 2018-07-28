@@ -4,6 +4,8 @@ import { UserService } from "../services/User.service";
 import { url } from "inspector";
 import { ProfileService } from "../services/Profile.service";
 import { TeamService } from "../services/Team.service";
+import { TeamsHelpers } from "../helpers/Teams.helpers";
+import { TeamController } from "./Team.Controller";
 
 export class ProfileController {
 
@@ -64,36 +66,32 @@ export class ProfileController {
         const id: number = req.body.id;
         const sport: string = req.body.sport;
         const id_team: number = req.body.id_team;
-
         const profile = await ProfileService.FindOneById(id, sport);
-        const team = await TeamService.FindOneById(id_team);
 
-        if (team.profile.length <= 0){
-            team.ranking = profile.ranking;
-        } else {
-            var sum = 0;
-            team.profile.forEach(function(element) {
-                sum += element.ranking;
-            });
-            sum += profile.ranking;
-            var averrage = sum / (team.profile.length + 1);
-            team.ranking = averrage;
+        if (id_team != null){
+            const team = await TeamService.FindOneById(id_team);
+            if (team == null){
+                return res.status(404).json({message: "team doesn't exist"});
+            }
+            if (team.isFill){
+                return res.status(404).json({message: "team is full"});
+            }
+            return TeamsHelpers.SaveAndReturn(team, profile, res)
         }
 
-        try {
-            await TeamService.Save(team);
-        } catch (ex) {
-            return res.status(404).json({message: "server error"});
+        const teams = await TeamService.FindBySportNotFill(sport);
+        const team = TeamsHelpers.Closest(teams, profile.ranking);
+
+        if (team === undefined) {
+            const teamName = ""
+            const team = await TeamsHelpers.CreateTeam(teamName, sport);
+            if (team == null){
+                return res.status(404).json({message: "server error"});
+            }
+            return TeamsHelpers.SaveAndReturn(team, profile, res)
         }
 
-        profile.team = team;
-
-        try {
-            const Result = await ProfileService.Save(profile);
-            return res.status(200).json(Result);
-        } catch (ex) {
-            return res.status(404).json({message: "server error"});
-        }
+        return TeamsHelpers.SaveAndReturn(team, profile, res)
 
     }
 
