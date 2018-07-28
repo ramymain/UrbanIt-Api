@@ -1,14 +1,15 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
-import { User } from "../models/User.model"
-import { Team } from "../models/Team.model"
+import { User } from "./User.model"
+import { Team } from "./Team.model"
+import { Sport } from "./Sport.model"
 
 @Entity("profile")
 export class Profile extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
-    public sport: string;
+    @ManyToOne(type => Sport, sport => sport.profiles)
+    sport: Sport;
 
     @Column({
         type: "numeric"

@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterUpdate } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterUpdate, BeforeUpdate } from "typeorm";
 import { Profile } from "./Profile.model"
 import { Match } from "./Match.model"
+import { Sport } from "./Sport.model"
 
 @Entity("team")
 export class Team extends BaseEntity {
@@ -17,18 +18,21 @@ export class Team extends BaseEntity {
     public ranking: number;
 
 
-    @Column()
-    public sport: string;
+    @ManyToOne(type => Sport, sport => sport.teams)
+    sport: Sport;
 
     @Column()
     public isFill: boolean;
 
     @OneToMany(type => Profile, profile => profile.team)
-    profile: Profile[];
+    profiles: Profile[];
+
+    @Column()
+    profileCount: number;
 
     @ManyToOne(type => Match, match => match.teams)
     match: Match;
-
+    
     @AfterUpdate()
     updateCounters() {
         console.log("after update");

@@ -1,13 +1,14 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { Team } from "../models/Team.model"
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
+import { Team } from "./Team.model"
+import { Sport } from "./Sport.model"
 
 @Entity("match")
 export class Match extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
-    public sport: string;
+    @ManyToOne(type => Sport, sport => sport.matchs)
+    sport: Sport;
 
     @Column()
     public nbMaxPlayers: number;

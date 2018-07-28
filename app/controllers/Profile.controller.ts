@@ -3,6 +3,7 @@ import { Profile } from "../models/Profile.model";
 import { UserService } from "../services/User.service";
 import { url } from "inspector";
 import { ProfileService } from "../services/Profile.service";
+import { SportService } from "../services/Sport.service";
 import { TeamService } from "../services/Team.service";
 import { TeamsHelpers } from "../helpers/Teams.helpers";
 
@@ -14,7 +15,7 @@ export class ProfileController {
     }
 
     public static async AllByPlayer(req: express.Request, res: express.Response) {
-        const ProfileList = await ProfileService.FindByPlayer(req.params.id);
+        const ProfileList = await ProfileService.FindByPlayer(req.params.idUser);
         return res.status(200).json(ProfileList);
     }
 
@@ -28,7 +29,7 @@ export class ProfileController {
         
         const user = await UserService.FindOneById(idUser);
         const profile = new Profile();
-        profile.sport = sport;
+        profile.sport = await SportService.FindBySport(sport);
         profile.size = size;
         profile.weight = weight;
         profile.numero = numero;
@@ -45,7 +46,8 @@ export class ProfileController {
 
     public static async Find(req: express.Request, res: express.Response) {
         const id: number = req.params.id;
-        const sport: string = req.params.sport;
+        const sport = await SportService.FindBySport(req.params.sport);
+
         const profile = await ProfileService.FindOneById(id, sport);
         return profile ? res.status(200).json(profile) : res.status(404).json({message: "profile not found"});
     }
@@ -63,7 +65,7 @@ export class ProfileController {
 
     public static async JoinTeam(req: express.Request, res: express.Response) {
         const idUser: number = req.body.idUser;
-        const sport: string = req.body.sport;
+        const sport = await SportService.FindBySport(req.body.sport);
         const idTeam: number = req.body.idTeam;
         const profile = await ProfileService.FindOneById(idUser, sport);
 
@@ -89,9 +91,7 @@ export class ProfileController {
             }
             return TeamsHelpers.SaveAndReturn(team, profile, res)
         }
-
         return TeamsHelpers.SaveAndReturn(team, profile, res)
-
     }
-
+    
 }

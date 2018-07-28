@@ -1,22 +1,23 @@
-import { EntityRepository, Repository } from "typeorm";
+import { EntityRepository, Repository, LessThan } from "typeorm";
 import { Team } from "../models/Team.model";
+import { Sport } from "../models/Sport.model";
 
 @EntityRepository(Team)
 export class TeamRepository extends Repository<Team> {
 
     public find(): Promise<Team[]> {
-        return this.manager.find(Team, {relations: ["profile", "match"]});
+        return this.manager.find(Team, {relations: ["profiles", "match", "sport"]});
     }
 
-    public findBySport(sport: string): Promise<Team[]> {
-        return this.manager.find(Team, {where: {sport : sport}, relations: ["profile", "match"]});
+    public findBySport(sport: Sport): Promise<Team[]> {
+        return this.manager.find(Team, {where: {sport : sport}, relations: ["profiles", "match", "sport"]});
     }
 
-    public findBySportNotFill(sport: string): Promise<Team[]> {
-        return this.manager.find(Team, {where: {sport : sport, isFill: false}, relations: ["profile", "match"]});
+    public findBySportNotFill(sport: Sport): Promise<Team[]> {
+        return this.manager.find(Team, {where: {sport : sport, isFill: false}, relations: ["profiles", "match", "sport"]});
     }
 
     public findOneById(id: number): Promise<Team> {
-        return this.manager.findOne(Team, {where: {id}, relations: ["profile", "match"]});
+        return this.manager.findOne(Team, {where: {id}, relations: ["profiles", "match", "sport"]});
     }
 }

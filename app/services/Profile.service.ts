@@ -1,5 +1,6 @@
 import { getCustomRepository } from "typeorm";
 import { Profile } from "../models/Profile.model";
+import { Sport } from "../models/Sport.model";
 import { ProfileRepository } from "../repository/Profile.repository";
 
 export class ProfileService {
@@ -16,7 +17,7 @@ export class ProfileService {
         return getCustomRepository(ProfileRepository).save(profile);
     }
 
-    public static FindOneById(idPlayer: number, sport: string): Promise<Profile> {
+    public static FindOneById(idPlayer: number, sport: Sport): Promise<Profile> {
         return getCustomRepository(ProfileRepository).findOneById(idPlayer, sport);
     }
 

@@ -1,5 +1,6 @@
 import { getCustomRepository } from "typeorm";
 import { Team } from "../models/Team.model";
+import { Sport } from "../models/Sport.model";
 import { TeamRepository } from "../repository/Team.repository";
 
 export class TeamService {
@@ -16,11 +17,11 @@ export class TeamService {
         return getCustomRepository(TeamRepository).find();
     }
 
-    public static FindBySport(sport: string): Promise<Team[]> {
+    public static FindBySport(sport: Sport): Promise<Team[]> {
         return getCustomRepository(TeamRepository).findBySport(sport);
     }
 
-    public static FindBySportNotFill(sport: string): Promise<Team[]> {
+    public static FindBySportNotFill(sport: Sport): Promise<Team[]> {
         return getCustomRepository(TeamRepository).findBySportNotFill(sport);
     }
 }

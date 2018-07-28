@@ -1,18 +1,19 @@
 import * as express from "express";
 import { ProfileService } from "../services/Profile.service"
 import { TeamService } from "../services/Team.service"
+import { SportService } from "../services/Sport.service"
 import { StringHelpers } from "../helpers/String.helpers"
 
 export async function ProfileExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     const idUser: number = req.body.idUser;
-    const sport: string = req.body.sport
+    const sport = await SportService.FindBySport(req.body.sport);
     const profile = await ProfileService.FindOneById(idUser, sport);
     profile ? next() : res.status(404).json({error: "profile doesn't exist"});
 }
 
 export async function ProfileShouldntExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     const idUser: number = req.body.idUser;
-    const sport: string = req.body.sport;
+    const sport = await SportService.FindBySport(req.body.sport);
     const profile = await ProfileService.FindOneById(idUser, sport);
     !profile ? next() : res.status(404).json({error: "profile already exist"});
 }

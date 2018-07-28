@@ -14,11 +14,11 @@ export class UserRepository extends Repository<User> {
     }
 
     public findByText(text: string): Promise<User[]> {
-        return this.manager.find(User, {where: {text}});
+        return this.manager.find(User, {where: {text}, relations: ["profiles"]});
     }
 
     public findOneById(id: number): Promise<User> {
-        return this.manager.findOne(User, {where: {id}, relations: ["profiles"]});
+        return this.manager.findOne(User, {where: {id: id}, relations: ["profiles"]});
     }
 
     public find(): Promise<User[]> {

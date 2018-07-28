@@ -11,8 +11,8 @@ export class UserController {
     }
 
     public static async Find(req: express.Request, res: express.Response) {
-        const id: number = req.params.id;
-        const user = await UserService.FindOneById(id);
+        const idUser: number = req.params.idUser;
+        const user = await UserService.FindOneById(idUser);
         return user ? res.status(200).json(user) : res.status(404).json({message: "user not found"});
     }
 

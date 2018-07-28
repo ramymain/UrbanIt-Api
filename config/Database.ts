@@ -3,6 +3,7 @@ import { User } from "../app/models/User.model";
 import { Match } from "../app/models/Match.model";
 import { Team } from "../app/models/Team.model";
 import { Profile } from "../app/models/Profile.model";
+import { Sport } from "../app/models/Sport.model";
 import { config, DIALECT } from "../config";
 
 export const Connection = createConnection({
@@ -12,6 +13,7 @@ export const Connection = createConnection({
         Match,
         Team,
         Profile,
+        Sport,
     ],
     host: config.DATABASE.SERVER,
     logging: false,

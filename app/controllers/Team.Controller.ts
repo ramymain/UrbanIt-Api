@@ -2,6 +2,7 @@ import * as express from "express";
 import { url } from "inspector";
 import { Team } from "../models/Team.model";
 import { TeamService } from "../services/Team.service";
+import { SportService } from "../services/Sport.service";
 
 export class TeamController {
 
@@ -18,11 +19,12 @@ export class TeamController {
 
     public static async Create(req: express.Request, res: express.Response) {
         const teamName: string = req.body.teamName;
-        const sport: string = req.body.sport;
+        const sport = await SportService.FindBySport(req.body.sport);
         const team = new Team();
         console.log("GENERER UN NOM DE TEAM SI VIDE");
         team.teamName = teamName;
         team.sport = sport;
+        team.profileCount = 0;
 
         try {
             const Result = await TeamService.Save(team);

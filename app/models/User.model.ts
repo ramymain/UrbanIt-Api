@@ -1,6 +1,6 @@
 import { IsEmail } from "class-validator";
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
-import { Profile } from "../models/Profile.model"
+import { Profile } from "./Profile.model"
 
 @Entity("user")
 export class User extends BaseEntity {

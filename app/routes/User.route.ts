@@ -4,7 +4,7 @@ import { UserExist, CheckCreate, CheckUpdate, CheckDelete } from "../middlewares
 
 export const UserRoute: express.Router = express.Router()
     .get("/", UserController.All)
-    .get("/:idUser", [ UserExist ], UserController.Find)
+    .get("/:idUser", [UserExist], UserController.Find)
     .post("/", [CheckCreate], UserController.Create)
-    .put("/", [CheckUpdate], UserController.Update)
-    .delete("/", [CheckDelete], UserController.Delete);
+    .put("/", [CheckUpdate, UserExist], UserController.Update)
+    .delete("/", [CheckDelete, UserExist], UserController.Delete);
