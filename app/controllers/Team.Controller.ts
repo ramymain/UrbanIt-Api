@@ -28,7 +28,7 @@ export class TeamController {
             const Result = await TeamService.Save(team);
             return res.status(200).json(Result);
         } catch (ex) {
-            return res.status(404).json({message: "server error"});
+            return res.status(404).json({error: "server error"});
         }
     }
 

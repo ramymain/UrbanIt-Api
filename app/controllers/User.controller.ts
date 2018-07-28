@@ -37,13 +37,13 @@ export class UserController {
             const Result = await UserService.Save(user);
             return res.status(200).json(Result);
         } catch (ex) {
-            return res.status(404).json({message: "server error"});
+            return res.status(404).json({error: "server error"});
         }
     }
 
     public static async Update(req: express.Request, res: express.Response) {
 
-        const id: number = req.body.id;
+        const idUser: number = req.body.idUser;
         const username: string = req.body.username;
         const keypass: string = req.body.keypass;
         const email: string = req.body.email;
@@ -52,7 +52,7 @@ export class UserController {
         const firstName: string = req.body.firstName;
         const lastName: string = req.body.lastName;
 
-        const user = await UserService.FindOneById(id);
+        const user = await UserService.FindOneById(idUser);
         const userUpdate = new User();
         userUpdate.id = user.id;
         userUpdate.username = (username ? username : user.username);
@@ -67,19 +67,19 @@ export class UserController {
             const Result = await UserService.Save(userUpdate);
             return Result ? res.status(200).json(Result) : res.status(404).send({message: "user not found"});
         } catch (ex) {
-            return res.status(404).json({message: "server error"});
+            return res.status(404).json({error: "server error"});
         }
 
     }
 
     public static async Delete(req: express.Request, res: express.Response) {
-        const id: number = req.body.id;
+        const idUser: number = req.body.idUser;
 
         try {
-            await UserService.RemoveById(id);
+            await UserService.RemoveById(idUser);
             return res.status(204).json({message: "correctly removed"});
         } catch (ex) {
-            return res.status(404).json({message: "server error"});
+            return res.status(404).json({error: "server error"});
         }
     }
 

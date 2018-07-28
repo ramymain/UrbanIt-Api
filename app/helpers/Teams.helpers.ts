@@ -44,7 +44,7 @@ export class TeamsHelpers {
         try {
             await TeamService.Save(team);
         } catch (ex) {
-            return res.status(404).json({message: "server error"});
+            return res.status(404).json({error: "server error"});
         }
 
         profile.team = team;
@@ -53,7 +53,7 @@ export class TeamsHelpers {
             const Result = await ProfileService.Save(profile);
             return res.status(200).json(Result);
         } catch (ex) {
-            return res.status(404).json({message: "server error"});
+            return res.status(404).json({error: "server error"});
         }
     }
 

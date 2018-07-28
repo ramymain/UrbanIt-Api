@@ -5,7 +5,7 @@ import { CheckJoin, CheckCreate, ProfileExist, ProfileShouldntExist } from "../m
 
 export const ProfileRoute: express.Router = express.Router()
     .get("/", ProfileController.All)
-    .get("/:id", [ UserExist ], ProfileController.AllByPlayer)
-    .get("/:id/:sport", [ UserExist ], ProfileController.Find)
+    .get("/:idUser", [ UserExist ], ProfileController.AllByPlayer)
+    .get("/:idUser/:sport", [ UserExist ], ProfileController.Find)
     .post("/", [ CheckCreate, UserExist, ProfileShouldntExist ], ProfileController.Create)
     .post("/jointeam", [ CheckJoin, ProfileExist ], ProfileController.JoinTeam);

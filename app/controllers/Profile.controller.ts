@@ -19,14 +19,14 @@ export class ProfileController {
     }
 
     public static async Create(req: express.Request, res: express.Response) {
-        const id_user: number = req.body.id_user;
+        const idUser: number = req.body.idUser;
         const sport: string = req.body.sport;
         const size: number = req.body.size;
         const weight: number = req.body.weight;
         const numero: number = req.body.numero;
         const position: string = req.body.position;
         
-        const user = await UserService.FindOneById(id_user);
+        const user = await UserService.FindOneById(idUser);
         const profile = new Profile();
         profile.sport = sport;
         profile.size = size;
@@ -39,7 +39,7 @@ export class ProfileController {
             const Result = await ProfileService.Save(profile);
             return res.status(200).json(Result);
         } catch (ex) {
-            return res.status(404).json({message: "server error"});
+            return res.status(404).json({error: "server error"});
         }
     }
 
@@ -57,18 +57,18 @@ export class ProfileController {
             await ProfileService.RemoveById(id);
             return res.status(204).json({message: "correctly removed"});
         } catch (ex) {
-            return res.status(404).json({message: "server error"});
+            return res.status(404).json({error: "server error"});
         }
     }
 
     public static async JoinTeam(req: express.Request, res: express.Response) {
-        const id_user: number = req.body.id_user;
+        const idUser: number = req.body.idUser;
         const sport: string = req.body.sport;
-        const id_team: number = req.body.id_team;
-        const profile = await ProfileService.FindOneById(id_user, sport);
+        const idTeam: number = req.body.idTeam;
+        const profile = await ProfileService.FindOneById(idUser, sport);
 
-        if (id_team != null){
-            const team = await TeamService.FindOneById(id_team);
+        if (idTeam != null){
+            const team = await TeamService.FindOneById(idTeam);
             if (team == null){
                 return res.status(404).json({message: "team doesn't exist"});
             }
@@ -85,7 +85,7 @@ export class ProfileController {
             const teamName = ""
             const team = await TeamsHelpers.CreateTeam(teamName, sport);
             if (team == null){
-                return res.status(404).json({message: "server error"});
+                return res.status(404).json({error: "server error"});
             }
             return TeamsHelpers.SaveAndReturn(team, profile, res)
         }

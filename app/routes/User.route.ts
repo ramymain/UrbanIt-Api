@@ -1,9 +1,10 @@
 import * as express from "express";
 import { UserController } from "../controllers/User.controller";
+import { UserExist, CheckCreate, CheckUpdate, CheckDelete } from "../middlewares/User.middleware"
 
 export const UserRoute: express.Router = express.Router()
     .get("/", UserController.All)
-    .get("/:id", UserController.Find)
-    .post("/", UserController.Create)
-    .put("/", UserController.Update)
-    .delete("/", UserController.Delete);
+    .get("/:idUser", [ UserExist ], UserController.Find)
+    .post("/", [CheckCreate], UserController.Create)
+    .put("/", [CheckUpdate], UserController.Update)
+    .delete("/", [CheckDelete], UserController.Delete);
