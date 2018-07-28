@@ -1,8 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterUpdate } from "typeorm";
 import { Profile } from "./Profile.model"
 import { Match } from "./Match.model"
-import { MatchController } from "../controllers/Match.controller"
-import { SPORTS, NBPLAYER } from "../enumeration/Match.enumeration";
 
 @Entity("team")
 export class Team extends BaseEntity {
@@ -10,7 +8,7 @@ export class Team extends BaseEntity {
     public id: number;
 
     @Column()
-    public teamname: string;
+    public teamName: string;
 
     @Column({
         type: "numeric",

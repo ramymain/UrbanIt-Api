@@ -17,11 +17,11 @@ export class TeamController {
     }
 
     public static async Create(req: express.Request, res: express.Response) {
-        const teamname: string = req.body.teamname;
+        const teamName: string = req.body.teamName;
         const sport: string = req.body.sport;
         const team = new Team();
         console.log("GENERER UN NOM DE TEAM SI VIDE");
-        team.teamname = teamname;
+        team.teamName = teamName;
         team.sport = sport;
 
         try {

@@ -57,10 +57,10 @@ export class TeamsHelpers {
         }
     }
 
-    public static async CreateTeam(teamname: string, sport: string) : Promise<Team> {
+    public static async CreateTeam(teamName: string, sport: string) : Promise<Team> {
         const team = new Team();
         console.log("GENERER UN NOM DE TEAM SI VIDE");
-        team.teamname = teamname;
+        team.teamName = teamName;
         team.sport = sport;
 
         try {
