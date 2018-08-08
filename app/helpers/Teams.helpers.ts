@@ -5,6 +5,7 @@ import { Profile } from "../models/Profile.model"
 import { Sport } from "../models/Sport.model";
 import { TeamService } from "../services/Team.service"
 import { ProfileService } from "../services/Profile.service"
+import { TeamController } from "../controllers/Team.Controller"
 
 export class TeamsHelpers {
     public static Closest(teams: Team[], num: number): Team{
@@ -29,7 +30,7 @@ export class TeamsHelpers {
             sum += Number(element.ranking);
         });
         sum += Number(rank);
-        var averrage = Number(sum) / Number((team.profiles.length + 1));
+        var averrage = Number(sum) / Number(((team.profiles ? team.profiles.length: 0) + 1));
         team.ranking = averrage;
 
         return averrage;
@@ -38,12 +39,16 @@ export class TeamsHelpers {
     public static async SaveAndReturn(team: Team, profile: Profile, res: express.Response) {
 
         if (!profile.team) {
-            if (team.profiles.length <= 0){
+            if (!team.profiles || team.profiles.length <= 0){
                 team.ranking = profile.ranking;
                 team.profileCount = 1;
             } else {
                 team.ranking = TeamsHelpers.AverageRank(team, profile.ranking);
-                team.profileCount = team.profiles.length + 1;
+                team.profileCount = ((team.profiles ? team.profiles.length: 0) + 1);
+            }
+            if (team.profileCount == (team.sport.nbPlayers / team.sport.nbTeam))
+            {
+                team.isFill = true;
             }
             try {
                 await TeamService.Save(team);
@@ -53,6 +58,11 @@ export class TeamsHelpers {
             profile.team = team;
             try {
                 const Result = await ProfileService.Save(profile);
+                if (team.isFill)
+                {
+                    console.log("join match");
+                    TeamController.JoinMatch(team, res)
+                }
                 return res.status(200).json(Result);
             } catch (ex) {
                 return res.status(404).json({error: "server error"});

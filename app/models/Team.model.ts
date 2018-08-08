@@ -1,7 +1,9 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterUpdate, BeforeUpdate } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterUpdate } from "typeorm";
 import { Profile } from "./Profile.model"
 import { Match } from "./Match.model"
 import { Sport } from "./Sport.model"
+import { TeamController } from "../controllers/Team.Controller"
+import * as express from "express";
 
 @Entity("team")
 export class Team extends BaseEntity {
@@ -32,9 +34,4 @@ export class Team extends BaseEntity {
 
     @ManyToOne(type => Match, match => match.teams)
     match: Match;
-    
-    @AfterUpdate()
-    updateCounters() {
-        console.log("after update");
-    }
 }

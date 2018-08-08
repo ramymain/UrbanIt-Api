@@ -1,6 +1,7 @@
 import * as express from "express";
 import { User } from "../models/User.model";
 import { UserService } from "../services/User.service";
+import { validate } from "class-validator";
 import { url } from "inspector";
 
 export class UserController {
@@ -34,6 +35,10 @@ export class UserController {
         user.lastName = lastName;
 
         try {
+            const errors = await validate(user);
+            if (errors && errors.length > 0){
+                return res.status(404).json({error: errors});
+            }
             const Result = await UserService.Save(user);
             return res.status(200).json(Result);
         } catch (ex) {
@@ -64,6 +69,10 @@ export class UserController {
         userUpdate.lastName = (lastName ? lastName : user.lastName);;
 
         try {
+            const errors = await validate(userUpdate);
+            if (errors && errors.length > 0){
+                return res.status(404).json({error: errors});
+            }
             const Result = await UserService.Save(userUpdate);
             return Result ? res.status(200).json(Result) : res.status(404).send({message: "user not found"});
         } catch (ex) {
