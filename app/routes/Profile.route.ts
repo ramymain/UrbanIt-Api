@@ -8,6 +8,6 @@ export const ProfileRoute: express.Router = express.Router()
     .get("/", ProfileController.All)
     .get("/:idUser", [ UserExist ], ProfileController.AllByPlayer)
     .get("/:idProfile", [ ProfileExist ], ProfileController.Find)
-    .get("/:id/:sport", [ UserExist, SportExist ], ProfileController.Find)
+    .get("/:id/:sport", [ UserExist, SportExist ], ProfileController.FindByUserAndSport)
     .post("/", [ CheckCreate, SportExist, UserExist, ProfileShouldntExist ], ProfileController.Create)
     .post("/jointeam", [ CheckJoin, ProfileExist ], ProfileController.JoinTeam);
