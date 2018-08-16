@@ -19,3 +19,21 @@ export async function CheckCreate(req: express.Request, res: express.Response, n
         next();
     }
 }
+
+export async function CheckJoinTeam(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    if (StringHelpers.isNullOrWhitespace(req.body.idTeam)){
+        res.status(404).json({error: "we need idTeam"});
+    }
+    else {
+        next();
+    }
+}
+
+export async function CheckJoinMatch(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    if (StringHelpers.isNullOrWhitespace(req.body.idTeam)){
+        res.status(404).json({error: "we need idTeam"});
+    }
+    else {
+        next();
+    }
+}

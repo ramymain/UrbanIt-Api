@@ -12,8 +12,12 @@ export class ProfileRepository extends Repository<Profile> {
         return this.manager.find(Profile, {where: {user: idPlayer}, relations: ['user', "team", "sport"]});
     }
 
-    public findOneById(idPlayer: number, sport: Sport): Promise<Profile> {
-        return this.manager.findOne(Profile, {where: {user: idPlayer, sport: sport}, relations: ['user', "team", "sport"]});
+    public findOneById(idProfile: number): Promise<Profile> {
+        return this.manager.findOne(Profile, {where: {id: idProfile}, relations: ['user', "team", "sport"]});
+    }
+
+    public findOneByUserAndSport(idUser: number, sport: Sport): Promise<Profile> {
+        return this.manager.findOne(Profile, {where: {user: idUser, sport: sport}, relations: ['user', "team", "sport"]});
     }
 
     public async removeById(id: number): Promise<Profile> {

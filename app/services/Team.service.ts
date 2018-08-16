@@ -24,4 +24,8 @@ export class TeamService {
     public static FindBySportNotFill(sport: Sport): Promise<Team[]> {
         return getCustomRepository(TeamRepository).findBySportNotFill(sport);
     }
+
+    public static RemoveById(id: number): Promise<Team> {
+        return getCustomRepository(TeamRepository).removeById(id);
+    }
 }

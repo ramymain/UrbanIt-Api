@@ -5,16 +5,15 @@ import { SportService } from "../services/Sport.service"
 import { StringHelpers } from "../helpers/String.helpers"
 
 export async function ProfileExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    const idUser: number = req.body.idUser;
-    const sport = await SportService.FindBySport(req.body.sport);
-    const profile = await ProfileService.FindOneById(idUser, sport);
+    const idProfile: number = req.body.idProfile;
+    const profile = await ProfileService.FindOneById(idProfile);
     profile ? next() : res.status(404).json({error: "profile doesn't exist"});
 }
 
 export async function ProfileShouldntExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     const idUser: number = req.body.idUser;
     const sport = await SportService.FindBySport(req.body.sport);
-    const profile = await ProfileService.FindOneById(idUser, sport);
+    const profile = await ProfileService.FindOneByUserAndSport(idUser, sport);
     !profile ? next() : res.status(404).json({error: "profile already exist"});
 }
 
@@ -49,11 +48,8 @@ export async function CheckCreate(req: express.Request, res: express.Response, n
 }
 
 export async function CheckJoin(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    if (StringHelpers.isNullOrWhitespace(req.body.idUser)){
-        res.status(404).json({error: "we need idUser"});
-    }
-    else if (StringHelpers.isNullOrWhitespace(req.body.sport)){
-        res.status(404).json({error: "we need sport"});
+    if (StringHelpers.isNullOrWhitespace(req.body.idProfile)){
+        res.status(404).json({error: "we need idProfile"});
     }
     else {
         next();

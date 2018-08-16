@@ -20,4 +20,9 @@ export class TeamRepository extends Repository<Team> {
     public findOneById(id: number): Promise<Team> {
         return this.manager.findOne(Team, {where: {id}, relations: ["profiles", "match", "sport"]});
     }
+
+    public async removeById(id: number): Promise<Team> {
+        const itemToRemove: Team = await this.findOne({id});
+        return this.manager.remove(itemToRemove);
+    }
 }

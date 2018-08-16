@@ -17,8 +17,12 @@ export class ProfileService {
         return getCustomRepository(ProfileRepository).save(profile);
     }
 
-    public static FindOneById(idPlayer: number, sport: Sport): Promise<Profile> {
-        return getCustomRepository(ProfileRepository).findOneById(idPlayer, sport);
+    public static FindOneById(idProfile: number): Promise<Profile> {
+        return getCustomRepository(ProfileRepository).findOneById(idProfile);
+    }
+
+    public static FindOneByUserAndSport(idUser: number, sport: Sport): Promise<Profile> {
+        return getCustomRepository(ProfileRepository).findOneByUserAndSport(idUser, sport);
     }
 
     public static RemoveById(id: number): Promise<Profile> {

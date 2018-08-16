@@ -6,14 +6,19 @@ import { Sport } from "../models/Sport.model";
 import { TeamService } from "../services/Team.service"
 import { ProfileService } from "../services/Profile.service"
 import { TeamController } from "../controllers/Team.Controller"
+import { TeamRepository } from "../repository/Team.repository";
 
 export class TeamsHelpers {
-    public static Closest(teams: Team[], num: number): Team{
+    public static Closest(teams: Team[], num: number, toNotFind: number): Team{
+        var toNotFindBool = (typeof toNotFind !== 'undefined')
         var i=0;
         var minDiff=4000;
         var team;
 
         teams.forEach(function(element) {
+            if (toNotFindBool && element.id == toNotFind){
+                return;
+            }
             var m = Math.abs(num - element.ranking);
             if(m < minDiff){ 
                    minDiff = m; 
@@ -60,8 +65,7 @@ export class TeamsHelpers {
                 const Result = await ProfileService.Save(profile);
                 if (team.isFill)
                 {
-                    console.log("join match");
-                    TeamController.JoinMatch(team, res)
+                    return TeamController.JoinMatch(Result.team.id, res)
                 }
                 return res.status(200).json(Result);
             } catch (ex) {
@@ -70,6 +74,46 @@ export class TeamsHelpers {
         } else {
             console.log("ENVOYER VERS FONCTION JOINTEAM DE TEAM")
             return res.status(200).json({message: "you already have team"});
+        }
+    }
+
+    public static AverageRankTeam(team: Team): number {
+        var sum = Number(0);
+        team.profiles.forEach(function(element) {
+            sum += Number(element.ranking);
+        });
+        var averrage = Number(sum) / Number(((team.profiles ? team.profiles.length: 1)));
+        team.ranking = averrage;
+
+        return averrage;
+    }
+
+    public static async SaveAndReturnTeams(teamJoin: Team, team: Team, res: express.Response) {
+        if ((teamJoin.profileCount + team.profileCount) > (team.sport.nbPlayers / team.sport.nbTeam)) {
+            return res.status(404).json({message: "you are too much for this team"});
+        }
+
+        team.profiles.forEach(function(element) {
+            teamJoin.profiles.push(element);
+        });
+
+        if (!teamJoin.profiles || teamJoin.profiles.length <= 0) {
+            return res.status(404).json({error: "server error"});
+        } else {
+            teamJoin.ranking = TeamsHelpers.AverageRankTeam(teamJoin);
+            teamJoin.profileCount = ((teamJoin.profiles ? teamJoin.profiles.length: 1));
+        }
+        if (teamJoin.profileCount == (teamJoin.sport.nbPlayers / teamJoin.sport.nbTeam))
+        {
+            teamJoin.isFill = true;
+        }
+        try {
+            const Result = await TeamService.Save(teamJoin);
+            await TeamService.RemoveById(team.id);
+            return res.status(200).json(Result);
+        } catch (ex) {
+            console.log(ex);
+            return res.status(404).json({error: "server error"});
         }
     }
 

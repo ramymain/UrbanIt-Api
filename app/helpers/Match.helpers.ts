@@ -61,14 +61,12 @@ export class MatchHelpers {
                 match.isFill = true;
             }
             
-            console.log("matchsave:" + match);
             try {
                 await MatchService.Save(match);
             } catch (ex) {
                 return res.status(404).json({error: "server error"});
             }
             team.match = match;
-            console.log("teamsave:" + team);
             try {
                 const Result = await TeamService.Save(team);
                 return res.status(200).json(Result);

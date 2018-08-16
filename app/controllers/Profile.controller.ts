@@ -45,10 +45,17 @@ export class ProfileController {
     }
 
     public static async Find(req: express.Request, res: express.Response) {
-        const id: number = req.params.id;
-        const sport = await SportService.FindBySport(req.params.sport);
+        const idProfile: number = req.params.idProfile;
 
-        const profile = await ProfileService.FindOneById(id, sport);
+        const profile = await ProfileService.FindOneById(idProfile);
+        return profile ? res.status(200).json(profile) : res.status(404).json({message: "profile not found"});
+    }
+
+    public static async FindByUserAndSport(req: express.Request, res: express.Response) {
+        const idProfile: number = req.params.idProfile;
+        const sport = await SportService.FindBySport(req.params.sport)
+
+        const profile = await ProfileService.FindOneByUserAndSport(idProfile, sport);
         return profile ? res.status(200).json(profile) : res.status(404).json({message: "profile not found"});
     }
 
@@ -64,10 +71,10 @@ export class ProfileController {
     }
 
     public static async JoinTeam(req: express.Request, res: express.Response) {
-        const idUser: number = req.body.idUser;
-        const sport = await SportService.FindBySport(req.body.sport);
+        const idProfile: number = req.body.idProfile;
         const idTeam: number = req.body.idTeam;
-        const profile = await ProfileService.FindOneById(idUser, sport);
+        const profile = await ProfileService.FindOneById(idProfile);
+        const sport = profile.sport;
 
         if (idTeam != null){
             const team = await TeamService.FindOneById(idTeam);
@@ -81,7 +88,7 @@ export class ProfileController {
         }
 
         const teams = await TeamService.FindBySportNotFill(sport);
-        const team = TeamsHelpers.Closest(teams, profile.ranking);
+        const team = TeamsHelpers.Closest(teams, profile.ranking, undefined);
 
         if (team === undefined) {
             const teamName = ""
