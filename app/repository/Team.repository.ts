@@ -6,19 +6,19 @@ import { Sport } from "../models/Sport.model";
 export class TeamRepository extends Repository<Team> {
 
     public find(): Promise<Team[]> {
-        return this.manager.find(Team, {relations: ["profiles", "match", "sport"]});
+        return this.manager.find(Team, {relations: ["profiles", "match", "sport", "teamLeader"]});
     }
 
     public findBySport(sport: Sport): Promise<Team[]> {
-        return this.manager.find(Team, {where: {sport : sport}, relations: ["profiles", "match", "sport"]});
+        return this.manager.find(Team, {where: {sport : sport}, relations: ["profiles", "match", "sport", "teamLeader"]});
     }
 
     public findBySportNotFill(sport: Sport): Promise<Team[]> {
-        return this.manager.find(Team, {where: {sport : sport, isFill: false}, relations: ["profiles", "match", "sport"]});
+        return this.manager.find(Team, {where: {sport : sport, isFill: false}, relations: ["profiles", "match", "sport", "teamLeader"]});
     }
 
     public findOneById(id: number): Promise<Team> {
-        return this.manager.findOne(Team, {where: {id}, relations: ["profiles", "match", "sport"]});
+        return this.manager.findOne(Team, {where: {id}, relations: ["profiles", "match", "sport", "teamLeader"]});
     }
 
     public async removeById(id: number): Promise<Team> {

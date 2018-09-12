@@ -1,9 +1,8 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, AfterUpdate } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { Profile } from "./Profile.model"
 import { Match } from "./Match.model"
 import { Sport } from "./Sport.model"
-import { TeamController } from "../controllers/Team.Controller"
-import * as express from "express";
+import { TeamLeader } from "./TeamLeader.model"
 
 @Entity("team")
 export class Team extends BaseEntity {
@@ -34,4 +33,7 @@ export class Team extends BaseEntity {
 
     @ManyToOne(type => Match, match => match.teams)
     match: Match;
+
+    @OneToOne(type => TeamLeader, teamLeader => teamLeader.team) // specify inverse side as a second parameter
+    teamLeader: TeamLeader;
 }

@@ -1,12 +1,11 @@
 import * as express from "express";
-import { url } from "inspector";
 import { Team } from "../models/Team.model"
 import { Profile } from "../models/Profile.model"
 import { Sport } from "../models/Sport.model";
 import { TeamService } from "../services/Team.service"
 import { ProfileService } from "../services/Profile.service"
 import { TeamController } from "../controllers/Team.Controller"
-import { TeamRepository } from "../repository/Team.repository";
+import { TeamLeaderController } from "../controllers/TeamLeader.controller";
 
 export class TeamsHelpers {
     public static Closest(teams: Team[], num: number, toNotFind: number): Team{
@@ -41,6 +40,19 @@ export class TeamsHelpers {
         return averrage;
     }
 
+    public static GetTeamLeader(team: Team): Profile {
+        var t;
+        var max = -Infinity;
+        team.profiles.forEach(function(element) {
+            if (Number(element.ranking) > Number(max)) {
+                max = element.ranking;
+                t = element;
+              }
+        });
+
+        return t;
+    }
+
     public static async SaveAndReturn(team: Team, profile: Profile, res: express.Response) {
 
         if (!profile.team) {
@@ -54,6 +66,9 @@ export class TeamsHelpers {
             if (team.profileCount == (team.sport.nbPlayers / team.sport.nbTeam))
             {
                 team.isFill = true;
+                var t = this.GetTeamLeader(team);
+                var teamLeader = await TeamLeaderController.Create(t, team);
+                team.teamLeader = teamLeader;
             }
             try {
                 await TeamService.Save(team);

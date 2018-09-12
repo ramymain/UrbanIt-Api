@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as jwt from "express-jwt";
 import { JWTRoute } from "../app/routes/Jwt.route";
+import { TestRoute } from "../app/routes/Test.route";
 import { UserRoute } from "../app/routes/User.route";
 import { ProfileRoute } from "../app/routes/Profile.route";
 import { MatchRoute } from "../app/routes/Match.route";
@@ -13,7 +14,11 @@ interface IROUTER {
     handler: express.Router;
 }
 
-export const ROUTER: IROUTER[] = [{
+export const ROUTER: IROUTER[] = [ {
+    handler: TestRoute,
+    middleware: [],
+    path: "/test",
+}, {
     handler: JWTRoute,
     middleware: [],
     path: "/JWT",

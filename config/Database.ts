@@ -5,6 +5,7 @@ import { Team } from "../app/models/Team.model";
 import { Profile } from "../app/models/Profile.model";
 import { Sport } from "../app/models/Sport.model";
 import { Score } from "../app/models/Score.model";
+import { TeamLeader } from "../app/models/TeamLeader.model";
 import { config, DIALECT } from "../config";
 
 export const Connection = createConnection({
@@ -16,6 +17,7 @@ export const Connection = createConnection({
         Profile,
         Sport,
         Score,
+        TeamLeader,
     ],
     host: config.DATABASE.SERVER,
     logging: false,
