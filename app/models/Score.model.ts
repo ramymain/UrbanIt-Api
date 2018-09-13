@@ -7,13 +7,15 @@ export class Score extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
+
+    @ManyToOne(type => Team, team => team.scores)
+    team: Team;
+
     @ManyToOne(type => Match, match => match.scores)
     match: Match;
 
-    @OneToOne(type => Team)
-    @JoinColumn()
-    team: Team;
-
-    @Column()
-    public isFill: boolean;
+    @Column({
+        type: "numeric"
+    })
+    public scored: number;
 }

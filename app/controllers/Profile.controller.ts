@@ -6,6 +6,8 @@ import { ProfileService } from "../services/Profile.service";
 import { SportService } from "../services/Sport.service";
 import { TeamService } from "../services/Team.service";
 import { TeamsHelpers } from "../helpers/Teams.helpers";
+import { Score } from "../models/Score.model";
+import { ScoreService } from "../services/Score.service";
 
 export class ProfileController {
 
@@ -99,6 +101,23 @@ export class ProfileController {
             return TeamsHelpers.SaveAndReturn(team, profile, res)
         }
         return TeamsHelpers.SaveAndReturn(team, profile, res)
+    }
+
+    public static async ScoreMatch(req: express.Request, res: express.Response) {
+        const scored: number = req.body.score;
+        const teamScore = res.locals.teamScore;
+
+        const score = new Score();
+        score.team = teamScore;
+        score.match = teamScore.match;
+        score.scored = scored;
+        try {
+            const Result = await ScoreService.Save(score);
+            return res.status(200).json(Result);
+        } catch (ex) {
+            console.log(ex);
+            return res.status(404).json({error: "server error"});
+        }
     }
     
 }

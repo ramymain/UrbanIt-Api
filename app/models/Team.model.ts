@@ -3,6 +3,7 @@ import { Profile } from "./Profile.model"
 import { Match } from "./Match.model"
 import { Sport } from "./Sport.model"
 import { TeamLeader } from "./TeamLeader.model"
+import { Score } from "./Score.model";
 
 @Entity("team")
 export class Team extends BaseEntity {
@@ -34,6 +35,9 @@ export class Team extends BaseEntity {
     @ManyToOne(type => Match, match => match.teams)
     match: Match;
 
-    @OneToOne(type => TeamLeader, teamLeader => teamLeader.team) // specify inverse side as a second parameter
+    @OneToOne(type => TeamLeader, teamLeader => teamLeader.team)
     teamLeader: TeamLeader;
+
+    @OneToMany(type => Score, score => score.match)
+    scores: Score[];
 }

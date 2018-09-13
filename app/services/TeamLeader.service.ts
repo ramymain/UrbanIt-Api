@@ -8,4 +8,8 @@ export class TeamLeaderService {
     public static Save(TeamLeader: TeamLeader): Promise<TeamLeader> {
         return getCustomRepository(TeamLeaderRepository).save(TeamLeader);
     }
+
+    public static FindOneById(idTeamLeader: number): Promise<TeamLeader> {
+        return getCustomRepository(TeamLeaderRepository).findOneById(idTeamLeader);
+    }
 }
