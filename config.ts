@@ -4,10 +4,10 @@ export const DIALECT = "mysql";
 
 const LOCAL_CONFIGURATION = {
 	DB: "urban_it",
-	PASSWORD: "",
+	PASSWORD: "8Md3rp6ty",
 	PORT_DB: 3306,
 	SERVER: "127.0.0.1",
-	USER_DB: "root",
+	USER_DB: "bostonrootuser",
 };
 
 const PRODUCTION_CONFIGURATION = {

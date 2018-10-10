@@ -18,9 +18,6 @@ export async function CheckCreate(req: express.Request, res: express.Response, n
     if (StringHelpers.isNullOrWhitespace(req.body.email)){
         res.status(404).json({error: "we need email"});
     }
-    // if (StringHelpers.isNullOrWhitespace(req.body.urlPict)){
-    //     res.status(404).json({error: "we need urlPict"});
-    // }
     if (StringHelpers.isNullOrWhitespace(req.body.description)){
         res.status(404).json({error: "we need description"});
     }

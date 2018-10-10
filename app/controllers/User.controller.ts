@@ -21,7 +21,6 @@ export class UserController {
         const username: string = req.body.username;
         const keypass: string = req.body.keypass;
         const email: string = req.body.email;
-        const urlPict: string = req.body.urlPict;
         const description: string = req.body.description;
         const firstName: string = req.body.firstName;
         const lastName: string = req.body.lastName;
@@ -29,7 +28,6 @@ export class UserController {
         user.username = username;
         user.keypass = keypass;
         user.email = email;
-        user.urlPict = urlPict;
         user.description = description;
         user.firstName = firstName;
         user.lastName = lastName;
@@ -42,6 +40,7 @@ export class UserController {
             const Result = await UserService.Save(user);
             return res.status(200).json(Result);
         } catch (ex) {
+            console.log(ex);
             return res.status(404).json({error: "server error"});
         }
     }
@@ -52,7 +51,6 @@ export class UserController {
         const username: string = req.body.username;
         const keypass: string = req.body.keypass;
         const email: string = req.body.email;
-        const urlPict: string = req.body.urlPict;
         const description: string = req.body.description;
         const firstName: string = req.body.firstName;
         const lastName: string = req.body.lastName;
@@ -63,7 +61,6 @@ export class UserController {
         userUpdate.username = (username ? username : user.username);
         userUpdate.keypass = (keypass ? keypass : user.keypass);
         userUpdate.email = (email ? email : user.email);
-        userUpdate.urlPict = (urlPict ? urlPict : user.urlPict);
         userUpdate.description = (description ? description : user.description);
         userUpdate.firstName = (firstName ? firstName : user.firstName);;
         userUpdate.lastName = (lastName ? lastName : user.lastName);;

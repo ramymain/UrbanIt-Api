@@ -20,7 +20,6 @@ describe("User route", () => {
         user.username = "username";
         user.keypass = "keypass";
         user.email = "email@email.com";
-        user.urlPict = "urlPict";
         user.description = "description";
 
         server.Start().then(() => {

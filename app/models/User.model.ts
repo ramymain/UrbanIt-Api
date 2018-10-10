@@ -29,9 +29,6 @@ export class User extends BaseEntity {
     public email: string;
 
     @Column("text")
-    public urlPict: string;
-
-    @Column("text")
     @IsDefined()
     public description: string;
 
