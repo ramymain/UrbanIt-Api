@@ -46,9 +46,7 @@ export class ProfileController {
     }
 
     public static async Find(req: express.Request, res: express.Response) {
-        const idProfile: number = req.params.idProfile;
-
-        const profile = await ProfileService.FindOneById(idProfile);
+        const profile = res.locals.profile;
         return profile ? res.status(200).json(profile) : res.status(404).json({message: "profile not found"});
     }
 
@@ -72,9 +70,8 @@ export class ProfileController {
     }
 
     public static async JoinTeam(req: express.Request, res: express.Response) {
-        const idProfile: number = req.body.idProfile;
         const idTeam: number = req.body.idTeam;
-        const profile = await ProfileService.FindOneById(idProfile);
+        const profile = res.locals.profile;
         const sport = profile.sport;
 
         if (idTeam != null){
