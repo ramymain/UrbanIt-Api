@@ -1,11 +1,11 @@
 import { createConnection } from "typeorm";
-import { User } from "../app/models/User.model";
-import { Match } from "../app/models/Match.model";
-import { Team } from "../app/models/Team.model";
-import { Profile } from "../app/models/Profile.model";
-import { Sport } from "../app/models/Sport.model";
-import { Score } from "../app/models/Score.model";
-import { TeamLeader } from "../app/models/TeamLeader.model";
+import { User } from "../app/account/user/User.model";
+import { Match } from "../app/tunnel/match/Match.model";
+import { Team } from "../app/tunnel/team/Team.model";
+import { Profile } from "../app/account/profile/Profile.model";
+import { Sport } from "../app/account/sport/Sport.model";
+import { Score } from "../app/score/Score.model";
+import { TeamLeader } from "../app/tunnel/teamLeader/TeamLeader.model";
 import { config, DIALECT } from "../config";
 
 export const Connection = createConnection({

@@ -1,9 +1,8 @@
 import * as chai from "chai";
 import * as express from "express";
 import * as supertest from "supertest";
-import { User } from "../app/models/User.model";
-import { JWTService } from "../app/services/Jwt.service";
-import { UserService } from "../app/services/User.service";
+import { User } from "../app/account/user/User.model";
+import { UserService } from "../app/account/user/User.service";
 import { Server } from "../config/Server";
 
 let token: string;
@@ -25,10 +24,8 @@ describe("User route", () => {
         server.Start().then(() => {
             app = server.App();
             Promise.all([
-                JWTService.signToken({name: "name", role: "rol"}),
                 UserService.Save(user),
             ]).then((res) => {
-                token = res[0];
                 IdRecord = res[1].id;
                 done();
             });

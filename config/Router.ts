@@ -1,11 +1,9 @@
 import * as express from "express";
 import * as jwt from "express-jwt";
-import { JWTRoute } from "../app/routes/Jwt.route";
-import { TestRoute } from "../app/routes/Test.route";
-import { UserRoute } from "../app/routes/User.route";
-import { ProfileRoute } from "../app/routes/Profile.route";
-import { MatchRoute } from "../app/routes/Match.route";
-import { TeamRoute } from "../app/routes/Team.route";
+import { UserRoute } from "../app/account/user/User.route";
+import { ProfileRoute } from "../app/account/profile/Profile.route";
+import { MatchRoute } from "../app/tunnel/match/Match.route";
+import { TeamRoute } from "../app/tunnel/team/Team.route";
 import { config } from "../config";
 
 interface IROUTER {
@@ -15,14 +13,6 @@ interface IROUTER {
 }
 
 export const ROUTER: IROUTER[] = [ {
-    handler: TestRoute,
-    middleware: [],
-    path: "/test",
-}, {
-    handler: JWTRoute,
-    middleware: [],
-    path: "/JWT",
-}, {
     handler: UserRoute,
     middleware: [
         jwt({secret: config.SECRET}),
