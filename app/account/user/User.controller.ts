@@ -13,8 +13,7 @@ export class UserController {
     }
 
     public static async Find(req: express.Request, res: express.Response) {
-        const idUser: number = req.params.idUser;
-        const user = await UserService.FindOneById(idUser);
+        const user = res.locals.user;
         return user ? res.status(200).json(user) : res.status(404).json({message: "user not found"});
     }
 
@@ -47,8 +46,6 @@ export class UserController {
     }
 
     public static async Update(req: express.Request, res: express.Response) {
-
-        const idUser: number = req.body.idUser;
         const username: string = req.body.username;
         const password: string = req.body.password;
         const email: string = req.body.email;
@@ -56,7 +53,7 @@ export class UserController {
         const firstName: string = req.body.firstName;
         const lastName: string = req.body.lastName;
 
-        const user = await UserService.FindOneById(idUser);
+        const user = res.locals.user;
         const userUpdate = new User();
         userUpdate.id = user.id;
         userUpdate.username = (username ? username : user.username);
@@ -81,7 +78,6 @@ export class UserController {
 
     public static async Delete(req: express.Request, res: express.Response) {
         const idUser: number = req.body.idUser;
-
         try {
             await UserService.RemoveById(idUser);
             return res.status(204).json({message: "correctly removed"});

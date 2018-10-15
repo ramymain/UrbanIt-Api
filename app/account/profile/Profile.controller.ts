@@ -22,14 +22,13 @@ export class ProfileController {
     }
 
     public static async Create(req: express.Request, res: express.Response) {
-        const idUser: number = req.body.idUser;
         const sport: string = req.body.sport;
         const size: number = req.body.size;
         const weight: number = req.body.weight;
         const numero: number = req.body.numero;
         const position: string = req.body.position;
         
-        const user = await UserService.FindOneById(idUser);
+        const user = res.locals.user;
         const profile = new Profile();
         profile.sport = await SportService.FindBySport(sport);
         profile.size = size;
