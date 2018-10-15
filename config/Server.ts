@@ -6,6 +6,9 @@ import * as methodOverride from "method-override";
 import * as morgan from "morgan";
 import { Connection } from "./Database";
 import { ROUTER } from "./Router";
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./config/swagger.yaml');
 
 export class Server {
     private static ConnectDB(): Promise<any> {
@@ -59,6 +62,8 @@ export class Server {
         for (const route of ROUTER) {
             this.app.use(route.path, route.middleware, route.handler);
         }
+
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction): void => {
             res.status(404);

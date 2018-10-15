@@ -1,0 +1,194 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Swagger API Team
+    email: apiteam@swagger.io
+    url: http://swagger.io
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost:1344
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/x-www-form-urlencoded
+produces:
+  - application/json
+Content-Type: application/x-www-form-urlencoded
+paths:
+  /user:
+    get:
+      tags:
+        - user
+      description: |
+        Returns all users
+      operationId: findUsers
+      responses:
+        "200":
+          description: user response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Pet'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+        - user
+      description: Creates a new user in the store.
+      operationId: addUser
+      parameters:
+        - name: username
+          type: string
+          in: formData
+          required: true
+        - name: password
+          type: string
+          in: formData
+          required: true
+        - name: email
+          type: string
+          in: formData
+          required: true
+        - name: description
+          type: string
+          in: formData
+          required: true
+        - name: firstName
+          type: string
+          in: formData
+          required: true
+        - name: lastName
+          type: string
+          in: formData
+          required: true
+      responses:
+        "201":
+          description: user response
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - user
+      description: Update a user in the store.
+      operationId: updateUser
+      parameters:
+        - name: idUser
+          type: string
+          in: formData
+          required: true
+        - name: username
+          type: string
+          in: formData
+        - name: password
+          type: string
+          in: formData
+        - name: email
+          type: string
+          in: formData
+        - name: description
+          type: string
+          in: formData
+        - name: firstName
+          type: string
+          in: formData
+        - name: lastName
+          type: string
+          in: formData
+      responses:
+        "201":
+          description: user response
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - user
+      description: Delete a user in the store.
+      operationId: deleteUser
+      parameters:
+        - name: idUser
+          type: string
+          in: formData
+          required: true
+      responses:
+        "204":
+          description: user response
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /user/{id}:
+    get:
+      tags:
+        - user
+      description: Returns a user based on a single ID
+      operationId: findOneUserById
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to fetch
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: user response
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  User:
+    allOf:
+      - $ref: '#/definitions/NewUser'
+      - required:
+        - id
+        properties:
+          id:
+            type: integer
+            format: int64
+
+  NewUser:
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      email:
+        type: string
+      description:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

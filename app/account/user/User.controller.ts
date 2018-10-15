@@ -39,7 +39,7 @@ export class UserController {
                 return res.status(404).json({error: errors});
             }
             const Result = await UserService.Save(user);
-            return res.status(200).json(Result);
+            return res.status(201).json(Result);
         } catch (ex) {
             console.log(ex);
             return res.status(404).json({error: "server error"});
@@ -72,7 +72,7 @@ export class UserController {
                 return res.status(404).json({error: errors});
             }
             const Result = await UserService.Save(userUpdate);
-            return Result ? res.status(200).json(Result) : res.status(404).send({message: "user not found"});
+            return Result ? res.status(201).json(Result) : res.status(404).send({message: "user not found"});
         } catch (ex) {
             return res.status(404).json({error: "server error"});
         }
