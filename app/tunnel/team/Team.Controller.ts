@@ -23,7 +23,7 @@ export class TeamController {
 
     public static async Create(req: express.Request, res: express.Response) {
         const teamName: string = req.body.teamName;
-        const sport = await SportService.FindBySport(req.body.sport);
+        const sport = res.locals.sportModel;
         const team = new Team();
         console.log("GENERER UN NOM DE TEAM SI VIDE");
         team.teamName = teamName;

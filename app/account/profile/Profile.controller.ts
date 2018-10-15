@@ -30,7 +30,7 @@ export class ProfileController {
         
         const user = res.locals.user;
         const profile = new Profile();
-        profile.sport = await SportService.FindBySport(sport);
+        profile.sport = res.locals.sportModel;
         profile.size = size;
         profile.weight = weight;
         profile.numero = numero;
@@ -52,7 +52,7 @@ export class ProfileController {
 
     public static async FindByUserAndSport(req: express.Request, res: express.Response) {
         const idProfile: number = req.params.idProfile;
-        const sport = await SportService.FindBySport(req.params.sport)
+        const sport = res.locals.sportModel;
 
         const profile = await ProfileService.FindOneByUserAndSport(idProfile, sport);
         return profile ? res.status(200).json(profile) : res.status(404).json({message: "profile not found"});
