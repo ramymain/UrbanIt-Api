@@ -18,12 +18,6 @@ export async function ProfileShouldntExist(req: express.Request, res: express.Re
     !profile ? next() : res.status(404).json({error: "profile already exist"});
 }
 
-export async function TeamExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    const idTeam: number = req.params.idTeam != null ? req.params.idTeam : req.body.idTeam != null ? req.body.idTeam : res.status(404).json({error: "we need idTeam"});
-    const team = await TeamService.FindOneById(idTeam);
-    team ? next() : res.status(404).json({error: "team doesn't exist"});
-}
-
 export async function CheckCreate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     if (StringHelpers.isNullOrWhitespace(req.body.idUser)){
         res.status(404).json({error: "we need idUser"});

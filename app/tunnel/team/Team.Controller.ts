@@ -16,9 +16,8 @@ export class TeamController {
     }
 
     public static async Find(req: express.Request, res: express.Response) {
-        const id: number = req.params.id;
-        const profile = await TeamService.FindOneById(id);
-        return profile ? res.status(200).json(profile) : res.status(404).json({message: "match not found"});
+        const team = res.locals.team;
+        return team ? res.status(200).json(team) : res.status(404).json({message: "match not found"});
     }
 
     public static async Create(req: express.Request, res: express.Response) {
@@ -39,9 +38,8 @@ export class TeamController {
     }
 
     public static async JoinTeam(req: express.Request, res: express.Response) {
-        const idTeam: number = req.body.idTeam;
         const idTeamJoin: number = req.body.idTeamJoin;
-        const team = await TeamService.FindOneById(idTeam);
+        const team = res.locals.team;
 
         if (idTeamJoin != null){
             const teamJoin = await TeamService.FindOneById(idTeamJoin);
@@ -84,7 +82,7 @@ export class TeamController {
     }
 
     public static async JoinMatchReq(req: express.Request, res: express.Response) {
-        const team = await TeamService.FindOneById(req.body.idTeam);
+        const team = res.locals.team;
         const matchs = await MatchService.FindBySportNotFill(team.sport);
         const match = MatchHelpers.Closest(matchs, team.ranking);
 

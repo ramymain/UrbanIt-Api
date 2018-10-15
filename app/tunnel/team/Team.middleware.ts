@@ -4,8 +4,9 @@ import { StringHelpers } from "../../helpers/String.helpers"
 
 export async function TeamExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     const idTeam: number = req.params.idTeam != null ? req.params.idTeam : req.body.idTeam != null ? req.body.idTeam : res.status(404).json({error: "we need idTeam"});
-    const user = await TeamService.FindOneById(idTeam);
-    user ? next() : res.status(404).json({error: "team doesn't exist"});
+    const team = await TeamService.FindOneById(idTeam);
+    res.locals.team = team;
+    team ? next() : res.status(404).json({error: "team doesn't exist"});
 }
 
 export async function CheckCreate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
