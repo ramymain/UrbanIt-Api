@@ -3,6 +3,7 @@ import { User } from "./User.model";
 import { UserService } from "./User.service";
 import { validate } from "class-validator";
 import { url } from "inspector";
+var passwordHash = require('password-hash');
 
 export class UserController {
 
@@ -19,14 +20,14 @@ export class UserController {
 
     public static async Create(req: express.Request, res: express.Response) {
         const username: string = req.body.username;
-        const keypass: string = req.body.keypass;
+        const password: string = req.body.password;
         const email: string = req.body.email;
         const description: string = req.body.description;
         const firstName: string = req.body.firstName;
         const lastName: string = req.body.lastName;
         const user = new User();
         user.username = username;
-        user.keypass = keypass;
+        user.password = passwordHash.generate(password);
         user.email = email;
         user.description = description;
         user.firstName = firstName;
@@ -49,7 +50,7 @@ export class UserController {
 
         const idUser: number = req.body.idUser;
         const username: string = req.body.username;
-        const keypass: string = req.body.keypass;
+        const password: string = req.body.password;
         const email: string = req.body.email;
         const description: string = req.body.description;
         const firstName: string = req.body.firstName;
@@ -59,7 +60,7 @@ export class UserController {
         const userUpdate = new User();
         userUpdate.id = user.id;
         userUpdate.username = (username ? username : user.username);
-        userUpdate.keypass = (keypass ? keypass : user.keypass);
+        userUpdate.password = (password ? passwordHash.generate(password) : user.password);
         userUpdate.email = (email ? email : user.email);
         userUpdate.description = (description ? description : user.description);
         userUpdate.firstName = (firstName ? firstName : user.firstName);;

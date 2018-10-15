@@ -12,8 +12,8 @@ export async function CheckCreate(req: express.Request, res: express.Response, n
     if (StringHelpers.isNullOrWhitespace(req.body.username)){
         res.status(404).json({error: "we need username"});
     }
-    if (StringHelpers.isNullOrWhitespace(req.body.keypass)){
-        res.status(404).json({error: "we need keypass"});
+    if (StringHelpers.isNullOrWhitespace(req.body.password)){
+        res.status(404).json({error: "we need password"});
     }
     if (StringHelpers.isNullOrWhitespace(req.body.email)){
         res.status(404).json({error: "we need email"});

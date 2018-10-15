@@ -17,7 +17,7 @@ describe("User route", () => {
 
         const user = new User();
         user.username = "username";
-        user.keypass = "keypass";
+        user.password = "password";
         user.email = "email@email.com";
         user.description = "description";
 

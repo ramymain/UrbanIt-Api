@@ -37,6 +37,7 @@
     "morgan": "^1.9.0",
     "mysql": "^2.15.0",
     "os": "^0.1.1",
+    "password-hash": "^1.2.2",
     "path": "^0.12.7",
     "superagent": "^3.8.2",
     "token-extractor": "^0.1.6",

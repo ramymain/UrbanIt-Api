@@ -21,7 +21,7 @@ export class User extends BaseEntity {
 
     @Column()
     @IsDefined()
-    public keypass: string;
+    public password: string;
 
     @Column("text")
     @IsEmail()
