@@ -22,7 +22,6 @@ export class ProfileController {
     }
 
     public static async Create(req: express.Request, res: express.Response) {
-        const sport: string = req.body.sport;
         const size: number = req.body.size;
         const weight: number = req.body.weight;
         const numero: number = req.body.numero;

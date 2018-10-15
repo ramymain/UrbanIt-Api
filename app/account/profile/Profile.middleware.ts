@@ -5,7 +5,7 @@ import { SportService } from "../sport/Sport.service"
 import { StringHelpers } from "../../helpers/String.helpers"
 
 export async function ProfileExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    const idProfile: number = req.body.idProfile;
+    const idProfile: number = req.params.idProfile != null ? req.params.idProfile : req.body.idProfile != null ? req.body.idProfile : res.status(404).json({error: "we need idProfile"});
     const profile = await ProfileService.FindOneById(idProfile);
     res.locals.profile = profile;
     profile ? next() : res.status(404).json({error: "profile doesn't exist"});
