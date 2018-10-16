@@ -2,19 +2,19 @@ import * as express from "express";
 import { User } from "./User.model";
 import { UserService } from "./User.service";
 import { validate } from "class-validator";
-import { url } from "inspector";
+import { ResultHelpers } from '../../helpers/Result.helpers'
 var passwordHash = require('password-hash');
 
 export class UserController {
 
     public static async All(req: express.Request, res: express.Response) {
         const UserList = await UserService.Find();
-        return res.status(200).json(UserList)
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", UserList))
     }
 
     public static async Find(req: express.Request, res: express.Response) {
         const user = res.locals.user;
-        return user ? res.status(200).json(user) : res.status(404).json({message: "user not found"});
+        return user ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", user)) : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));
     }
 
     public static async Create(req: express.Request, res: express.Response) {
@@ -35,13 +35,13 @@ export class UserController {
         try {
             const errors = await validate(user);
             if (errors && errors.length > 0){
-                return res.status(404).json({error: errors});
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { error : errors }));
             }
             const Result = await UserService.Save(user);
-            return res.status(201).json(Result);
+            return res.status(201).json(ResultHelpers.createReturnJson(201, "success", Result));
         } catch (ex) {
             console.log(ex);
-            return res.status(404).json({error: "server error"});
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", {server: "internal server error"}));
         }
     }
 
@@ -66,12 +66,12 @@ export class UserController {
         try {
             const errors = await validate(userUpdate);
             if (errors && errors.length > 0){
-                return res.status(404).json({error: errors});
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { error : errors }));
             }
             const Result = await UserService.Save(userUpdate);
-            return Result ? res.status(201).json(Result) : res.status(404).send({message: "user not found"});
+            return Result ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result)) : res.status(404).send(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));
         } catch (ex) {
-            return res.status(404).json({error: "server error"});
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", {server: "internal server error"}));
         }
 
     }
@@ -80,9 +80,9 @@ export class UserController {
         const idUser: number = req.body.idUser;
         try {
             await UserService.RemoveById(idUser);
-            return res.status(204).json({message: "correctly removed"});
+            return res.status(204).json(ResultHelpers.createReturnJson(204, "success", { user: "correctly removed" }));
         } catch (ex) {
-            return res.status(404).json({error: "server error"});
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", {server: "internal server error"}));
         }
     }
 
