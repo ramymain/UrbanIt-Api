@@ -256,6 +256,28 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /profile/jointeam:
+    post:
+      tags:
+        - profile
+      description: Join a team with a profile.
+      operationId: profileJoinTeam
+      parameters:
+        - name: idProfile
+          type: integer
+          in: formData
+          required: true
+      responses:
+        "200":
+          description: join team response
+          schema:
+            $oneOf:
+            - "$ref": "#/definitions/Team"
+            - "$ref": "#/definitions/Match"
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   User:
     allOf:
@@ -307,6 +329,50 @@ definitions:
       idUser:
         type: integer
         format: int64
+  
+  Team:
+    allOf:
+      - $ref: '#/definitions/NewTeam'
+      - required:
+        - id
+        properties:
+          id:
+            type: integer
+            format: int64
+
+  NewTeam:
+    properties:
+      teamName:
+        type: string
+      ranking:
+        type: integer
+      sport:
+        type: string
+      isFill:
+        type: boolean
+      profileCount:
+        type: integer
+
+  Match:
+    allOf:
+      - $ref: '#/definitions/NewMatch'
+      - required:
+        - id
+        properties:
+          id:
+            type: integer
+            format: int64
+
+  NewMatch:
+    properties:
+      ranking:
+        type: integer
+      sport:
+        type: string
+      isFill:
+        type: boolean
+      teamCount:
+        type: integer
 
   Error:
     required:

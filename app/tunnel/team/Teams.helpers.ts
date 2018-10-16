@@ -137,11 +137,14 @@ export class TeamsHelpers {
         console.log("GENERER UN NOM DE TEAM SI VIDE");
         team.teamName = teamName;
         team.sport = sport;
+        team.isFill = false;
+        team.profileCount = 1;
 
         try {
             const Result = await TeamService.Save(team);
             return (Result);
         } catch (ex) {
+            console.log(ex);
             return (null)
         }
     }
