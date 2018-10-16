@@ -28,6 +28,7 @@ export class TeamController {
         team.teamName = teamName;
         team.sport = sport;
         team.profileCount = 0;
+        team.isFill = false;
 
         try {
             const Result = await TeamService.Save(team);
@@ -83,6 +84,9 @@ export class TeamController {
 
     public static async JoinMatchReq(req: express.Request, res: express.Response) {
         const team = res.locals.team;
+        if (!team.isFill) {
+            return res.status(403).json({error: "your team isn't fill"});
+        }
         const matchs = await MatchService.FindBySportNotFill(team.sport);
         const match = MatchHelpers.Closest(matchs, team.ranking);
 

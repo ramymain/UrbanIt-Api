@@ -278,6 +278,113 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /team:
+    get:
+      tags:
+        - team
+      description: |
+        Returns all teams
+      operationId: findTea 
+      responses:
+        "200":
+          description: team response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Team'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+        - team
+      description: Creates a new team in the store.
+      operationId: addTeam
+      parameters:
+        - name: teamName
+          type: string
+          in: formData
+        - name: sport
+          type: string
+          in: formData
+          required: true
+      responses:
+        "201":
+          description: team response
+          schema:
+            $ref: '#/definitions/Team'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /team/{idTeam}:
+    get:
+      tags:
+        - team
+      description: Returns team based on a single Id
+      operationId: findTeamById
+      parameters:
+        - name: idTeam
+          in: path
+          description: ID of team to fetch
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: team response
+          schema:
+            $ref: '#/definitions/Team'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /team/jointeam:
+    post:
+      tags:
+        - team
+      description: Join a team with a team.
+      operationId: teamJoinTeam
+      parameters:
+        - name: idTeam
+          type: integer
+          in: formData
+          required: true
+        - name: idTeamJoin
+          type: integer
+          in: formData
+      responses:
+        "200":
+          description: join team response
+          schema:
+            $oneOf:
+            - "$ref": "#/definitions/Team"
+            - "$ref": "#/definitions/Match"
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /team/joinmatch:
+    post:
+      tags:
+        - team
+      description: Join a match with a team.
+      operationId: teamJoinMatch
+      parameters:
+        - name: idTeam
+          type: integer
+          in: formData
+          required: true
+      responses:
+        "200":
+          description: join team response
+          schema:
+            $ref: '#/definitions/Match'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   User:
     allOf:
