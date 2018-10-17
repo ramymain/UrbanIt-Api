@@ -157,6 +157,30 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /user/signIn:
+    post:
+      tags:
+        - user
+      description: sign in a user
+      operationId: signInUser
+      parameters:
+        - name: email
+          type: string
+          in: formData
+          required: true
+        - name: password
+          type: string
+          in: formData
+          required: true
+      responses:
+        "200":
+          description: user response
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /profile:
     get:
       tags:

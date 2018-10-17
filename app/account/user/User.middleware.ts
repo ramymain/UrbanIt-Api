@@ -10,6 +10,13 @@ export async function UserExist(req: express.Request, res: express.Response, nex
     user ? next() : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));
 }
 
+export async function UserExistEmail(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    const email: string = req.body.email ? req.body.email : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { "email": "we need email" }));
+    const user = await UserService.FindOneByEmail(email);
+    res.locals.user = user;
+    user ? next() : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));
+}
+
 export async function CheckLoginAvailable(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     var errors = JSON.parse("{}");
     const email = req.body.email;
@@ -62,6 +69,22 @@ export async function CheckUpdate(req: express.Request, res: express.Response, n
     var errors = JSON.parse("{}");
     if (StringHelpers.isNullOrWhitespace(req.params.idUser)) {
         errors.idUser = "we need idUser";
+    }
+    if (errors && Object.keys(errors).length > 0) {
+        res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));
+    }
+    else {
+        next();
+    }
+}
+
+export async function CheckSignIn(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    var errors = JSON.parse("{}");
+    if (StringHelpers.isNullOrWhitespace(req.body.email)) {
+        errors.email = "we need email";
+    }
+    if (StringHelpers.isNullOrWhitespace(req.body.password)) {
+        errors.password = "we need password";
     }
     if (errors && Object.keys(errors).length > 0) {
         res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));

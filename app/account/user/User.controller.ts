@@ -9,12 +9,26 @@ export class UserController {
 
     public static async All(req: express.Request, res: express.Response) {
         const UserList = await UserService.Find();
+        UserList.forEach(function(user){
+            delete user.password;
+        })
         return res.status(200).json(ResultHelpers.createReturnJson(200, "success", UserList))
     }
 
     public static async Find(req: express.Request, res: express.Response) {
         const user = res.locals.user;
+        delete user.password;
         return user ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", user)) : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));
+    }
+
+    public static async SignIn(req: express.Request, res: express.Response) {
+        const user = res.locals.user;
+        if (passwordHash.verify(req.body.password, user.password)) {
+            delete user.password;
+            return res.status(200).json(ResultHelpers.createReturnJson(200, "success", user));
+        } else {
+            res.status(400).json(ResultHelpers.createReturnJson(400, "error", { "password": "password is not correct" }));
+        }
     }
 
     public static async Create(req: express.Request, res: express.Response) {
@@ -34,15 +48,16 @@ export class UserController {
 
         try {
             const errors = await validate(user);
-            if (errors && errors.length > 0){
+            if (errors && errors.length > 0) {
                 var errorsJson = ResultHelpers.createErrorsValidate(errors)
-                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson ));
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson));
             }
             const Result = await UserService.Save(user);
+            delete Result.password;
             return res.status(201).json(ResultHelpers.createReturnJson(201, "success", Result));
         } catch (ex) {
             console.log(ex);
-            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", {server: "internal server error"}));
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
     }
 
@@ -66,11 +81,12 @@ export class UserController {
 
         try {
             const errors = await validate(userUpdate);
-            if (errors && errors.length > 0){
+            if (errors && errors.length > 0) {
                 var errorsJson = ResultHelpers.createErrorsValidate(errors)
-                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson ));
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson));
             }
             const Result = await UserService.Save(userUpdate);
+            delete Result.password
             return Result ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result)) : res.status(404).send(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));
         } catch (ex) {
             return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
@@ -84,6 +100,7 @@ export class UserController {
             await UserService.RemoveById(idUser);
             return res.status(204).json(ResultHelpers.createReturnJson(204, "success", { user: "correctly removed" }));
         } catch (ex) {
+            console.log(ex);
             return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
     }
