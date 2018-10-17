@@ -75,6 +75,28 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /user/{idUser}:
+    get:
+      tags:
+        - user
+      description: Returns a user based on a single ID
+      operationId: findOneUserById
+      parameters:
+        - name: idUser
+          in: path
+          description: ID of user to fetch
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: user response
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       tags:
         - user
@@ -82,9 +104,11 @@ paths:
       operationId: updateUser
       parameters:
         - name: idUser
-          type: string
-          in: formData
+          in: path
+          description: ID of user to fetch
           required: true
+          type: integer
+          format: int64
         - name: username
           type: string
           in: formData
@@ -119,33 +143,13 @@ paths:
       operationId: deleteUser
       parameters:
         - name: idUser
-          type: string
-          in: formData
-          required: true
-      responses:
-        "204":
-          description: user response
-          schema:
-            $ref: '#/definitions/User'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /user/{id}:
-    get:
-      tags:
-        - user
-      description: Returns a user based on a single ID
-      operationId: findOneUserById
-      parameters:
-        - name: id
           in: path
           description: ID of user to fetch
           required: true
           type: integer
           format: int64
       responses:
-        "200":
+        "204":
           description: user response
           schema:
             $ref: '#/definitions/User'

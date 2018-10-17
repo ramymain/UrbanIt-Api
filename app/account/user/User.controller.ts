@@ -81,7 +81,7 @@ export class UserController {
     }
 
     public static async Delete(req: express.Request, res: express.Response) {
-        const idUser: number = req.body.idUser;
+        const idUser: number = req.params.idUser;
         try {
             await UserService.RemoveById(idUser);
             return res.status(204).json(ResultHelpers.createReturnJson(204, "success", { user: "correctly removed" }));

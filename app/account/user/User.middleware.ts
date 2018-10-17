@@ -60,7 +60,7 @@ export async function CheckCreate(req: express.Request, res: express.Response, n
 
 export async function CheckUpdate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     var errors = JSON.parse("{}");
-    if (StringHelpers.isNullOrWhitespace(req.body.idUser)){
+    if (StringHelpers.isNullOrWhitespace(req.params.idUser)){
         errors.idUser = "we need idUser";
     }
     if (errors && Object.keys(errors).length > 0){
@@ -73,7 +73,7 @@ export async function CheckUpdate(req: express.Request, res: express.Response, n
 
 export async function CheckDelete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     var errors = JSON.parse("{}");
-    if (StringHelpers.isNullOrWhitespace(req.body.idUser)){
+    if (StringHelpers.isNullOrWhitespace(req.params.idUser)){
         errors.idUser = "we need idUser";
     }
     if (errors && Object.keys(errors).length > 0){
