@@ -10,6 +10,26 @@ export async function UserExist(req: express.Request, res: express.Response, nex
     user ? next() : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));
 }
 
+export async function CheckLoginAvailable(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    var errors = JSON.parse("{}");
+    const email = req.body.email;
+    const username = req.body.username;
+    const userEmail = await UserService.FindOneByEmail(email);
+    const userUsername = await UserService.FindOneByUsername(username);
+    if (userUsername){
+        errors.email = "username already exist";
+    }
+    if (userEmail){
+        errors.password = "email already exist";
+    }
+    if (errors && Object.keys(errors).length > 0){
+        res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));
+    }
+    else {
+        next();
+    }
+}
+
 export async function CheckCreate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     var errors = JSON.parse("{}");
     if (StringHelpers.isNullOrWhitespace(req.body.username)){

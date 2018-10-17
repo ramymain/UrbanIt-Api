@@ -3,6 +3,8 @@ import { User } from "./User.model";
 import { UserService } from "./User.service";
 import { validate } from "class-validator";
 import { ResultHelpers } from '../../helpers/Result.helpers'
+import { StringHelpers } from '../../helpers/String.helpers'
+import { stringify } from "querystring";
 var passwordHash = require('password-hash');
 
 export class UserController {
@@ -35,7 +37,8 @@ export class UserController {
         try {
             const errors = await validate(user);
             if (errors && errors.length > 0){
-                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { error : errors }));
+                var errorsJson = ResultHelpers.createErrorsValidate(errors)
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson ));
             }
             const Result = await UserService.Save(user);
             return res.status(201).json(ResultHelpers.createReturnJson(201, "success", Result));
@@ -66,12 +69,13 @@ export class UserController {
         try {
             const errors = await validate(userUpdate);
             if (errors && errors.length > 0){
-                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { error : errors }));
+                var errorsJson = ResultHelpers.createErrorsValidate(errors)
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson ));
             }
             const Result = await UserService.Save(userUpdate);
             return Result ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result)) : res.status(404).send(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));
         } catch (ex) {
-            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", {server: "internal server error"}));
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
 
     }
@@ -82,7 +86,7 @@ export class UserController {
             await UserService.RemoveById(idUser);
             return res.status(204).json(ResultHelpers.createReturnJson(204, "success", { user: "correctly removed" }));
         } catch (ex) {
-            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", {server: "internal server error"}));
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
     }
 

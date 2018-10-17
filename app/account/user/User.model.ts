@@ -1,8 +1,10 @@
 import { IsEmail, IsDefined } from "class-validator";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany, Unique } from "typeorm";
 import { Profile } from "../profile/Profile.model"
 
 @Entity("user")
+@Unique(["username"])
+@Unique(["email"])
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
@@ -23,7 +25,7 @@ export class User extends BaseEntity {
     @IsDefined()
     public password: string;
 
-    @Column("text")
+    @Column()
     @IsEmail()
     @IsDefined()
     public email: string;

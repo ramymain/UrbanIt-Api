@@ -21,6 +21,14 @@ export class UserRepository extends Repository<User> {
         return this.manager.findOne(User, {where: {id: id}, relations: ["profiles"]});
     }
 
+    public findOneByEmail(email: string): Promise<User> {
+        return this.manager.findOne(User, {where: {email: email}, relations: ["profiles"]});
+    }
+
+    public findOneByUsername(username: string): Promise<User> {
+        return this.manager.findOne(User, {where: {username: username}, relations: ["profiles"]});
+    }
+
     public find(): Promise<User[]> {
         return this.manager.find(User, {relations: ['profiles']});
     }

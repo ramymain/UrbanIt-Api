@@ -15,6 +15,14 @@ export class UserService {
         return getCustomRepository(UserRepository).findOneById(id);
     }
 
+    public static FindOneByEmail(email: string): Promise<User> {
+        return getCustomRepository(UserRepository).findOneByEmail(email);
+    }
+
+    public static FindOneByUsername(username: string): Promise<User> {
+        return getCustomRepository(UserRepository).findOneByUsername(username);
+    }
+
     public static Find(): Promise<User[]> {
         return getCustomRepository(UserRepository).find();
     }
