@@ -87,7 +87,7 @@ export async function CheckSignIn(req: express.Request, res: express.Response, n
         errors.password = "we need password";
     }
     if (errors && Object.keys(errors).length > 0) {
-        res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));
+        res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
     }
     else {
         next();
