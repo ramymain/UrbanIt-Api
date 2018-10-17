@@ -25,18 +25,18 @@ export async function CheckCreate(req: express.Request, res: express.Response, n
     else if (StringHelpers.isNullOrWhitespace(req.body.sport)){
         res.status(404).json({error: "we need sport"});
     }
-    // else if (StringHelpers.isNullOrWhitespace(req.body.size)){
-    //     res.status(404).json({error: "we need size"});
-    // }
-    // else if (StringHelpers.isNullOrWhitespace(req.body.weight)){
-    //     res.status(404).json({error: "we need weight"});
-    // }
-    // else if (StringHelpers.isNullOrWhitespace(req.body.numero)){
-    //     res.status(404).json({error: "we need numero"});
-    // }
-    // else if (StringHelpers.isNullOrWhitespace(req.body.position)){
-    //     res.status(404).json({error: "we need position"});
-    // }
+    else if (StringHelpers.isNullOrWhitespace(req.body.size)){
+        res.status(404).json({error: "we need size"});
+    }
+    else if (StringHelpers.isNullOrWhitespace(req.body.weight)){
+        res.status(404).json({error: "we need weight"});
+    }
+    else if (StringHelpers.isNullOrWhitespace(req.body.numero)){
+        res.status(404).json({error: "we need numero"});
+    }
+    else if (StringHelpers.isNullOrWhitespace(req.body.position)){
+        res.status(404).json({error: "we need position"});
+    }
     else {
         next();
     }

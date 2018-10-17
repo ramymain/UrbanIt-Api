@@ -3,8 +3,6 @@ import { User } from "./User.model";
 import { UserService } from "./User.service";
 import { validate } from "class-validator";
 import { ResultHelpers } from '../../helpers/Result.helpers'
-import { StringHelpers } from '../../helpers/String.helpers'
-import { stringify } from "querystring";
 var passwordHash = require('password-hash');
 
 export class UserController {

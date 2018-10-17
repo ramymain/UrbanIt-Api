@@ -2,6 +2,7 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne } from "t
 import { User } from "../user/User.model"
 import { Team } from "../../tunnel/team/Team.model"
 import { Sport } from "../sport/Sport.model"
+import { IsDefined } from "class-validator";
 
 @Entity("profile")
 export class Profile extends BaseEntity {
@@ -11,20 +12,24 @@ export class Profile extends BaseEntity {
     @ManyToOne(type => Sport, sport => sport.profiles)
     sport: Sport;
 
+    @IsDefined()
     @Column({
         type: "numeric"
     })
     public size: number;
 
 
+    @IsDefined()
     @Column({
         type: "numeric"
     })
     public weight: number;
 
+    @IsDefined()
     @Column()
     public numero: number;
 
+    @IsDefined()
     @Column()
     public position: string;
 

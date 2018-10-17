@@ -1,13 +1,13 @@
 import * as express from "express";
 import { Profile } from "./Profile.model";
 import { UserService } from "../user/User.service";
-import { url } from "inspector";
 import { ProfileService } from "./Profile.service";
-import { SportService } from "../sport/Sport.service";
 import { TeamService } from "../../tunnel/team/Team.service";
 import { TeamsHelpers } from "../../tunnel/team/Teams.helpers";
 import { Score } from "../../score/Score.model";
 import { ScoreService } from "../../score/Score.service";
+import { validate } from "class-validator";
+import { ResultHelpers } from '../../helpers/Result.helpers'
 
 export class ProfileController {
 
@@ -37,11 +37,46 @@ export class ProfileController {
         profile.user = user;
 
         try {
+            const errors = await validate(profile);
+            if (errors && errors.length > 0){
+                var errorsJson = ResultHelpers.createErrorsValidate(errors)
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson ));
+            }
             const Result = await ProfileService.Save(profile);
-            return res.status(200).json(Result);
+            res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result));
         } catch (ex) {
-            return res.status(404).json({error: "server error"});
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
+    }
+
+    public static async Update(req: express.Request, res: express.Response) {
+        const size: number = req.body.size;
+        const weight: number = req.body.weight;
+        const numero: number = req.body.numero;
+        const position: string = req.body.position;
+
+        const profile = res.locals.profile;
+        const profileUpdate = new Profile();
+        profileUpdate.sport = (res.locals.sportModel ? res.locals.sportModel : profile.sport);
+        profileUpdate.size = (size ? size : profile.size);
+        profileUpdate.weight = (weight ? weight : profile.size);
+        profileUpdate.numero = (numero ? numero : profile.numero);
+        profileUpdate.position = (position ? position : profile.position);
+        profileUpdate.user = profile.user
+
+
+        try {
+            const errors = await validate(profileUpdate);
+            if (errors && errors.length > 0){
+                var errorsJson = ResultHelpers.createErrorsValidate(errors)
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson ));
+            }
+            const Result = await ProfileService.Save(profileUpdate);
+            return res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result));
+        } catch (ex) {
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
+        }
+
     }
 
     public static async Find(req: express.Request, res: express.Response) {
@@ -58,7 +93,7 @@ export class ProfileController {
     }
 
     public static async Delete(req: express.Request, res: express.Response) {
-        const id: number = req.body.id;
+        const id: number = req.params.idProfile;
 
         try {
             await ProfileService.RemoveById(id);
