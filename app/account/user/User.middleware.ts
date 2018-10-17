@@ -17,10 +17,10 @@ export async function CheckLoginAvailable(req: express.Request, res: express.Res
     const userEmail = await UserService.FindOneByEmail(email);
     const userUsername = await UserService.FindOneByUsername(username);
     if (userUsername){
-        errors.email = "username already exist";
+        errors.username = "username already exist";
     }
     if (userEmail){
-        errors.password = "email already exist";
+        errors.email = "email already exist";
     }
     if (errors && Object.keys(errors).length > 0){
         res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));
