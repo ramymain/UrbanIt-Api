@@ -13,12 +13,12 @@ export class ProfileController {
 
     public static async All(req: express.Request, res: express.Response) {
         const ProfileList = await ProfileService.Find();
-        return res.status(200).json(ProfileList);
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", ProfileList));
     }
 
     public static async AllByPlayer(req: express.Request, res: express.Response) {
         const ProfileList = await ProfileService.FindByPlayer(req.params.idUser);
-        return res.status(200).json(ProfileList);
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", ProfileList));
     }
 
     public static async Create(req: express.Request, res: express.Response) {
@@ -81,7 +81,7 @@ export class ProfileController {
 
     public static async Find(req: express.Request, res: express.Response) {
         const profile = res.locals.profile;
-        return profile ? res.status(200).json(profile) : res.status(404).json({message: "profile not found"});
+        return profile ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", profile)) : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { profile: "profile not found"}));
     }
 
     public static async FindByUserAndSport(req: express.Request, res: express.Response) {
@@ -89,17 +89,18 @@ export class ProfileController {
         const sport = res.locals.sportModel;
 
         const profile = await ProfileService.FindOneByUserAndSport(idProfile, sport);
-        return profile ? res.status(200).json(profile) : res.status(404).json({message: "profile not found"});
+        return profile ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", profile)) : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { profile: "profile not found"}));
     }
 
     public static async Delete(req: express.Request, res: express.Response) {
-        const id: number = req.params.idProfile;
+        const idProfile: number = req.params.idProfile;
+
 
         try {
-            await ProfileService.RemoveById(id);
-            return res.status(204).json({message: "correctly removed"});
+            await ProfileService.RemoveById(idProfile);
+            return res.status(204).json(ResultHelpers.createReturnJson(204, "success", { user: "correctly removed" }));
         } catch (ex) {
-            return res.status(404).json({error: "server error"});
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
     }
 
@@ -111,10 +112,10 @@ export class ProfileController {
         if (idTeam != null){
             const team = await TeamService.FindOneById(idTeam);
             if (team == null){
-                return res.status(404).json({message: "team doesn't exist"});
+                return res.status(404).json(ResultHelpers.createReturnJson(404, "error", { team: "team doesn't exist" }));
             }
             if (team.isFill){
-                return res.status(404).json({message: "team is full"});
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { server: "team is full" }));
             }
             return TeamsHelpers.SaveAndReturn(team, profile, res)
         }
@@ -126,7 +127,7 @@ export class ProfileController {
             const teamName = ""
             const team = await TeamsHelpers.CreateTeam(teamName, sport);
             if (team == null){
-                return res.status(404).json({error: "server error"});
+                return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
             return TeamsHelpers.SaveAndReturn(team, profile, res)
         }
@@ -143,10 +144,9 @@ export class ProfileController {
         score.scored = scored;
         try {
             const Result = await ScoreService.Save(score);
-            return res.status(200).json(Result);
+            return res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result))
         } catch (ex) {
-            console.log(ex);
-            return res.status(404).json({error: "server error"});
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
     }
     
