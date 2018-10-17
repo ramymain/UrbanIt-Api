@@ -7,17 +7,18 @@ import { MatchService } from "../match/Match.service";
 import { SportService } from "../../account/sport/Sport.service";
 import { MatchHelpers } from "../match/Match.helpers";
 import { TeamsHelpers } from "./Teams.helpers";
+import { ResultHelpers } from "../../helpers/Result.helpers"
 
 export class TeamController {
 
     public static async All(req: express.Request, res: express.Response) {
         const TeamList = await TeamService.Find();
-        return res.status(200).json(TeamList);
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", TeamList))
     }
 
     public static async Find(req: express.Request, res: express.Response) {
         const team = res.locals.team;
-        return team ? res.status(200).json(team) : res.status(404).json({message: "match not found"});
+        return team ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", team)) : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { "match": "team doesn't exist" }));
     }
 
     public static async Create(req: express.Request, res: express.Response) {
@@ -32,9 +33,10 @@ export class TeamController {
 
         try {
             const Result = await TeamService.Save(team);
-            return res.status(200).json(Result);
+            return res.status(201).json(ResultHelpers.createReturnJson(201, "success", Result))
         } catch (ex) {
-            return res.status(404).json({error: "server error"});
+            console.log(ex);
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
     }
 
@@ -45,10 +47,10 @@ export class TeamController {
         if (idTeamJoin != null){
             const teamJoin = await TeamService.FindOneById(idTeamJoin);
             if (teamJoin == null){
-                return res.status(404).json({message: "team you want to join doesn't exist"});
+                return res.status(404).json(ResultHelpers.createReturnJson(404, "error", { team: "team you want to join doesn't exist" }));
             }
             if (teamJoin.isFill){
-                return res.status(404).json({message: "team you want to join is full"});
+                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { server: "team is full" }));
             }
             return TeamsHelpers.SaveAndReturnTeams(teamJoin, team, res);
         }
@@ -60,7 +62,7 @@ export class TeamController {
             const teamName = ""
             const teamJoin = await TeamsHelpers.CreateTeam(teamName, team.sport);
             if (teamJoin == null){
-                return res.status(404).json({error: "server error"});
+                return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
             return TeamsHelpers.SaveAndReturnTeams(teamJoin, team, res);
         }
@@ -75,7 +77,7 @@ export class TeamController {
         if (match === undefined) {
             const match = await MatchHelpers.CreateMatch(team.sport);
             if (match == null){
-                return res.status(404).json({error: "server error"});
+                return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
             return MatchHelpers.SaveAndReturn(match, team, res)
         }
@@ -93,7 +95,7 @@ export class TeamController {
         if (match === undefined) {
             const match = await MatchHelpers.CreateMatch(team.sport);
             if (match == null){
-                return res.status(404).json({error: "server error"});
+                return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
             return MatchHelpers.SaveAndReturn(match, team, res)
         }

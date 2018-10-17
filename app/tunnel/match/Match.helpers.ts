@@ -5,6 +5,7 @@ import { Sport } from "../../account/sport/Sport.model";
 import { MatchService } from "./Match.service";
 import { Team } from "../team/Team.model";
 import { TeamService } from "../team/Team.service";
+import { ResultHelpers } from "../../helpers/Result.helpers";
 
 export class MatchHelpers {
     public static Closest(matchs: Match[], num: number): Match {
@@ -64,17 +65,17 @@ export class MatchHelpers {
             try {
                 await MatchService.Save(match);
             } catch (ex) {
-                return res.status(404).json({error: "server error"});
+                return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
             team.match = match;
             try {
                 const Result = await TeamService.Save(team);
-                return res.status(200).json(Result);
+                return res.status(200).json(ResultHelpers.createReturnJson(201, "success", Result))
             } catch (ex) {
-                return res.status(404).json({error: "server error"});
+                return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
         } else {
-            return res.status(404).json({error: "team not fill"});
+            return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { server: "team not" }));
         }
     }
 }

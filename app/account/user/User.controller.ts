@@ -56,7 +56,6 @@ export class UserController {
             delete Result.password;
             return res.status(201).json(ResultHelpers.createReturnJson(201, "success", Result));
         } catch (ex) {
-            console.log(ex);
             return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
     }
