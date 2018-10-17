@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
 import { Team } from "../team/Team.model"
 import { Sport } from "../../account/sport/Sport.model"
-import { Score } from "../../score/Score.model"
+import { Score } from "../../score/score/Score.model"
 
 @Entity("match")
 export class Match extends BaseEntity {

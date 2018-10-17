@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, ManyToOne, JoinColumn } from "typeorm";
-import { Team } from "../tunnel/team/Team.model"
-import { Match } from "../tunnel/match/Match.model"
+import { Team } from "../../tunnel/team/Team.model"
+import { Match } from "../../tunnel/match/Match.model"
 
 @Entity("score")
 export class Score extends BaseEntity {

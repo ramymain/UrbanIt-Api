@@ -3,7 +3,7 @@ import { ProfileController } from "./Profile.controller";
 import { UserExist } from "../user/User.middleware";
 import { CheckDelete, CheckJoin, CheckCreate, ProfileExist, ProfileShouldntExist } from "./Profile.middleware";
 import { SportExist, OptionnalSportExist } from "../sport/Sport.middleware";
-import { CheckEntry, CheckProfile, CheckTeamScore, CheckTeamLeader, CheckMatchs } from "../../score/Score.middleware";
+import { CheckEntry, CheckProfile, CheckTeamScore, CheckTeamLeader, CheckMatchs } from "../../score/score/Score.middleware";
 
 export const ProfileRoute: express.Router = express.Router()
     .get("/", ProfileController.All)

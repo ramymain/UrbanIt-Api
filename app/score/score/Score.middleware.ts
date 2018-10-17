@@ -1,9 +1,9 @@
 import * as express from "express";
-import { TeamService } from "../tunnel/team/Team.service"
-import { StringHelpers } from "../helpers/String.helpers"
-import { ProfileService } from "../account/profile/Profile.service";
-import { TeamLeaderService } from "../tunnel/teamLeader/TeamLeader.service";
-import { ResultHelpers } from "../helpers/Result.helpers"
+import { TeamService } from "../../tunnel/team/Team.service"
+import { StringHelpers } from "../../helpers/String.helpers"
+import { ProfileService } from "../../account/profile/Profile.service";
+import { TeamLeaderService } from "../../tunnel/teamLeader/TeamLeader.service";
+import { ResultHelpers } from "../../helpers/Result.helpers"
 
 export async function CheckEntry(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     var errors = JSON.parse("{}");

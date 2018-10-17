@@ -4,8 +4,8 @@ import { UserService } from "../user/User.service";
 import { ProfileService } from "./Profile.service";
 import { TeamService } from "../../tunnel/team/Team.service";
 import { TeamsHelpers } from "../../tunnel/team/Teams.helpers";
-import { Score } from "../../score/Score.model";
-import { ScoreService } from "../../score/Score.service";
+import { Score } from "../../score/score/Score.model";
+import { ScoreService } from "../../score/score/Score.service";
 import { validate } from "class-validator";
 import { ResultHelpers } from '../../helpers/Result.helpers'
 

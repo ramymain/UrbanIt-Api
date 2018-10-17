@@ -4,7 +4,7 @@ import { Match } from "../app/tunnel/match/Match.model";
 import { Team } from "../app/tunnel/team/Team.model";
 import { Profile } from "../app/account/profile/Profile.model";
 import { Sport } from "../app/account/sport/Sport.model";
-import { Score } from "../app/score/Score.model";
+import { Score } from "../app/score/score/Score.model";
 import { TeamLeader } from "../app/tunnel/teamLeader/TeamLeader.model";
 import { config, DIALECT } from "../config";
 
