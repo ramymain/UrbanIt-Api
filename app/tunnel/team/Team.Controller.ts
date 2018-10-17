@@ -25,7 +25,6 @@ export class TeamController {
         const teamName: string = req.body.teamName;
         const sport = res.locals.sportModel;
         const team = new Team();
-        console.log("GENERER UN NOM DE TEAM SI VIDE");
         team.teamName = teamName;
         team.sport = sport;
         team.profileCount = 0;

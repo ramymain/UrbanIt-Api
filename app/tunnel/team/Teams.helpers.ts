@@ -131,8 +131,7 @@ export class TeamsHelpers {
 
     public static async CreateTeam(teamName: string, sport: Sport): Promise<Team> {
         const team = new Team();
-        console.log("GENERER UN NOM DE TEAM SI VIDE");
-        team.teamName = teamName;
+        team.teamName = teamName
         team.sport = sport;
         team.isFill = false;
         team.profileCount = 1;

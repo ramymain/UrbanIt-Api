@@ -4,13 +4,16 @@ import { Match } from "../match/Match.model"
 import { Sport } from "../../account/sport/Sport.model"
 import { TeamLeader } from "../teamLeader/TeamLeader.model"
 import { Score } from "../../score/Score.model";
+var generate = require('project-name-generator');
 
 @Entity("team")
 export class Team extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
+    @Column({
+        default: generate({ words: 3 }).dashed
+    })
     public teamName: string;
 
     @Column({
