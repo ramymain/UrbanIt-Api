@@ -11,4 +11,8 @@ export class MatchService {
     public static Save(match: Match): Promise<Match> {
         return getCustomRepository(MatchRepository).save(match);
     }
+
+    public static FindOneById(idMatch: number): Promise<Match> {
+        return getCustomRepository(MatchRepository).findOneById(idMatch);
+    }
 }

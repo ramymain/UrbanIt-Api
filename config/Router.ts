@@ -4,6 +4,7 @@ import { UserRoute } from "../app/account/user/User.route";
 import { ProfileRoute } from "../app/account/profile/Profile.route";
 import { MatchRoute } from "../app/tunnel/match/Match.route";
 import { TeamRoute } from "../app/tunnel/team/Team.route";
+import { ScoreRoute } from "../app/score/score/Score.route"
 import { config } from "../config";
 
 interface IROUTER {
@@ -34,4 +35,8 @@ export const ROUTER: IROUTER[] = [ {
     handler: TeamRoute,
     middleware: [],
     path: "/team",
+}, {
+    handler: ScoreRoute,
+    middleware: [],
+    path: "/score",
 }];

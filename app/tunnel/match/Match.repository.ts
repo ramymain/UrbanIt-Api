@@ -7,4 +7,8 @@ export class MatchRepository extends Repository<Match> {
     public findBySportNotFill(sport: Sport): Promise<Match[]> {
         return this.manager.find(Match, {where: {sport : sport, isFill: false}, relations: ["teams", "sport"]});
     }
+
+    public findOneById(idMatch: number): Promise<Match> {
+        return this.manager.findOne(Match, {where: {id: idMatch}, relations: ["teams", "sport"]});
+    }
 }

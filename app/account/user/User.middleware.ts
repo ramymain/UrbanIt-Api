@@ -4,7 +4,7 @@ import { StringHelpers } from "../../helpers/String.helpers"
 import { ResultHelpers } from "../../helpers/Result.helpers"
 
 export async function UserExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    const idUser: number = req.params.idUser != null ? req.params.idUser : req.body.idUser != null ? req.body.idUser : res.status(404).json({ error: "we need idUser" });
+    const idUser: number = req.params.idUser != null ? req.params.idUser : req.body.idUser != null ? req.body.idUser : res.status(400).json(ResultHelpers.createReturnJson(400, "error", { "idUser": "we need idUser" }));
     const user = await UserService.FindOneById(idUser);
     res.locals.user = user;
     user ? next() : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { "user": "user doesn't exist" }));

@@ -5,7 +5,7 @@ import { StringHelpers } from "../../helpers/String.helpers"
 import { ResultHelpers } from "../../helpers/Result.helpers"
 
 export async function ProfileExist(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    const idProfile: number = req.params.idProfile != null ? req.params.idProfile : req.body.idProfile != null ? req.body.idProfile : res.status(404).json({ error: "we need idProfile" });
+    const idProfile: number = req.params.idProfile != null ? req.params.idProfile : req.body.idProfile != null ? req.body.idProfile : res.status(400).json(ResultHelpers.createReturnJson(400, "error", { "idProfile": "we need idProfile" }));
     const profile = await ProfileService.FindOneById(idProfile);
     res.locals.profile = profile;
     profile ? next() : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { profile: "profile doesn't exist" }));

@@ -1,20 +1,22 @@
 import * as express from "express";
-import { TeamService } from "../../tunnel/team/Team.service"
+import { Team } from "../../tunnel/team/Team.model"
 import { StringHelpers } from "../../helpers/String.helpers"
-import { ProfileService } from "../../account/profile/Profile.service";
-import { TeamLeaderService } from "../../tunnel/teamLeader/TeamLeader.service";
 import { ResultHelpers } from "../../helpers/Result.helpers"
+
 
 export async function CheckEntry(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     var errors = JSON.parse("{}");
-    if (StringHelpers.isNullOrWhitespace(req.body.idProfile)){
+    if (StringHelpers.isNullOrWhitespace(req.params.idMatch)) {
+        errors.idProfile = "we need idMatch";
+    }
+    if (StringHelpers.isNullOrWhitespace(req.body.idProfile)) {
         errors.idProfile = "we need idProfile";
     }
-    else if (StringHelpers.isNullOrWhitespace(req.body.idTeamScore)){
-        errors.idTeamScore = "we need idTeamScore";
+    if (StringHelpers.isNullOrWhitespace(req.body.idsTeam)) {
+        errors.idsTeam = "we need idsTeam";
     }
-    else if (StringHelpers.isNullOrWhitespace(req.body.score)){
-        errors.score = "we need score";
+    if (StringHelpers.isNullOrWhitespace(req.body.scores)) {
+        errors.scores = "we need scores";
     }
     if (errors && Object.keys(errors).length > 0) {
         res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
@@ -24,52 +26,64 @@ export async function CheckEntry(req: express.Request, res: express.Response, ne
     }
 }
 
-export async function CheckProfile(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+export async function CheckJson(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     var errors = JSON.parse("{}");
-    const profile = await ProfileService.FindOneById(req.body.idProfile);
-    if (!profile){
-        errors.idTeamScore = "we need idTeamScore";
-        res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
-    } else {
-        res.locals.profile = profile;
-        next();
+    try {
+        var teams = JSON.parse(req.body.idsTeam);
+        var scores = JSON.parse(req.body.scores);
+    } catch (ex) {
+        errors.server = "internal server error";
     }
-}
-
-export async function CheckTeamScore(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    var errors = JSON.parse("{}");
-    const teamScore = await TeamService.FindOneById(req.body.idTeamScore);
-    if (!teamScore){
-        errors.teamLeader = "no team leader";
-        res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
-    } else {
-        res.locals.teamScore = teamScore;
-        next();
+    if (errors && Object.keys(errors).length > 0) {
+        res.status(500).json(ResultHelpers.createReturnJson(500, "error", errors));
     }
-}
+    else {
+        if ((teams && Object.keys(teams).length <= 0)) {
+            errors.idsTeam = "json teams incorrect";
+        }
+        if ((scores && Object.keys(scores).length <= 0)) {
+            errors.scores = "json scores incorrect";
+        }
 
-export async function CheckTeamLeader(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-    var errors = JSON.parse("{}");
-    if (res.locals.profile.team.teamLeader == null){
-        errors.teamLeader = "no team leader";
-        res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
-    } else {
-        res.locals.teamLeader = await TeamLeaderService.FindOneById(res.locals.profile.team.teamLeader.id);
-        if (res.locals.teamLeader.profile.id != res.locals.profile.id) {
-            errors.teamLeader = "profile isn't team leader";
+        if (Object.keys(teams).length != Object.keys(scores).length) {
+            errors.scores = "json doesn't have the same elememt number";
+        }
+        if (errors && Object.keys(errors).length > 0) {
             res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
-        } else {
+        }
+        else {
             next();
         }
     }
 }
 
-export async function CheckMatchs(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+export async function CheckTeamInMatchAndTeamLeader(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     var errors = JSON.parse("{}");
-    if (res.locals.profile.team.match.id != res.locals.teamScore.match.id){
-        errors.teamLeader = "teams aren't in the same match";
+    var teams = JSON.parse(req.body.idsTeam);
+    var found = false;
+    var foundTeamLeader = false;
+    var idProfile = parseInt(req.body.idProfile);
+    teams.forEach(function (teamId: number) {
+        found = false;
+        res.locals.match.teams.forEach(function (team: Team) {
+            if (team.id == teamId) {
+                found = true;
+            }
+            if (team.teamLeader.id == idProfile) {
+                foundTeamLeader = true;
+            }
+        });
+        if (!found) {
+            res.status(400).json(ResultHelpers.createReturnJson(400, "error", { idsTeam: "one or more team(s) doesn't exist" }));
+        }
+    });
+    if (!foundTeamLeader) {
+        res.status(400).json(ResultHelpers.createReturnJson(400, "error", { idsTeam: "you're not the team leader" }));
+    }
+    else if (errors && Object.keys(errors).length > 0) {
         res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
-    } else {
+    }
+    else {
         next();
     }
 }
