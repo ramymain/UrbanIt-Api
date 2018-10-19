@@ -20,12 +20,17 @@ export class Match extends BaseEntity {
     @OneToMany(type => Team, team => team.match)
     teams: Team[];
 
-    @Column()
+    @Column({
+        default: false
+    })
     public isFill: boolean;
 
     @OneToMany(type => Score, score => score.match)
     scores: Score[];
 
-    @Column()
+    @Column({
+        type: "numeric",
+        default: 0
+    })
     teamCount: number;
 }

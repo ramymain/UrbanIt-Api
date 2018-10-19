@@ -75,7 +75,7 @@ export class MatchHelpers {
                 return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
         } else {
-            return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { server: "team not" }));
+            return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { server: "team not fill" }));
         }
     }
 }
