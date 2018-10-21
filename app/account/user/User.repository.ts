@@ -14,22 +14,22 @@ export class UserRepository extends Repository<User> {
     }
 
     public findByText(text: string): Promise<User[]> {
-        return this.manager.find(User, {where: {text}, relations: ["profiles"]});
+        return this.manager.find(User, {where: {text}, relations: ["profiles", "profiles.team", "profiles.sport"]});
     }
 
     public findOneById(id: number): Promise<User> {
-        return this.manager.findOne(User, {where: {id: id}, relations: ["profiles"]});
+        return this.manager.findOne(User, {where: {id: id}, relations: ["profiles", "profiles.team", "profiles.sport"]});
     }
 
     public findOneByEmail(email: string): Promise<User> {
-        return this.manager.findOne(User, {where: {email: email}, relations: ["profiles"]});
+        return this.manager.findOne(User, {where: {email: email}, relations: ["profiles", "profiles.team", "profiles.sport"]});
     }
 
     public findOneByUsername(username: string): Promise<User> {
-        return this.manager.findOne(User, {where: {username: username}, relations: ["profiles"]});
+        return this.manager.findOne(User, {where: {username: username}, relations: ["profiles", "profiles.team", "profiles.sport"]});
     }
 
     public find(): Promise<User[]> {
-        return this.manager.find(User, {relations: ['profiles']});
+        return this.manager.find(User, {relations: ["profiles", "profiles.team", "profiles.sport"]});
     }
 }
