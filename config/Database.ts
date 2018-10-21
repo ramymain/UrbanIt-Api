@@ -6,6 +6,7 @@ import { Profile } from "../app/account/profile/Profile.model";
 import { Sport } from "../app/account/sport/Sport.model";
 import { Score } from "../app/score/score/Score.model";
 import { TeamLeader } from "../app/tunnel/teamLeader/TeamLeader.model";
+import { ScoreVerif } from "../app/score/scoreVerif/ScoreVerif.model"
 import { config, DIALECT } from "../config";
 
 export const Connection = createConnection({
@@ -18,6 +19,7 @@ export const Connection = createConnection({
         Sport,
         Score,
         TeamLeader,
+        ScoreVerif,
     ],
     host: config.DATABASE.SERVER,
     logging: false,

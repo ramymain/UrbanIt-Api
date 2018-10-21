@@ -63,13 +63,14 @@ export async function CheckTeamInMatchAndTeamLeader(req: express.Request, res: e
     var found = false;
     var foundTeamLeader = false;
     var idProfile = parseInt(req.body.idProfile);
-    teams.forEach(function (teamId: number) {
+    Object.keys(teams).forEach(function (key) {
+        var teamId = parseInt(teams[key]);
         found = false;
         res.locals.match.teams.forEach(function (team: Team) {
             if (team.id == teamId) {
                 found = true;
             }
-            if (team.teamLeader.id == idProfile) {
+            if (team.teamLeader.profile.id == idProfile) {
                 foundTeamLeader = true;
             }
         });
