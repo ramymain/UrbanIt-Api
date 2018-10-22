@@ -476,6 +476,24 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /sport:
+    get:
+      tags:
+        - sport
+      description: |
+        Returns all sport
+      operationId: findSport
+      responses:
+        "200":
+          description: sport response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Sport'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   User:
     allOf:
@@ -570,6 +588,25 @@ definitions:
       isFill:
         type: boolean
       teamCount:
+        type: integer
+
+  Sport:
+    allOf:
+      - $ref: '#/definitions/NewSport'
+      - required:
+        - id
+        properties:
+          id:
+            type: integer
+            format: int64
+
+  NewSport:
+    properties:
+      sport:
+        type: string
+      nbPlayers:
+        type: integer
+      nbTeam:
         type: integer
 
   Error:
