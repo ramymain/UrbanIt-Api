@@ -7,6 +7,7 @@ import { Score } from "../../score/score/Score.model"
 import { TeamsHelpers } from "../team/Teams.helpers";
 import { MatchHelpers } from "./Match.helpers";
 import { ResultHelpers } from "../../helpers/Result.helpers";
+import { Match } from "./Match.model";
 
 export class MatchController {
     public static async All(req: express.Request, res: express.Response) {
@@ -14,10 +15,8 @@ export class MatchController {
         console.log(NBPLAYER.BASKET);
     }
 
-    public static async Ranking(req: express.Request, res: express.Response) {
-        var idMatch = 1;
+    public static Ranking(match: Match): Match {
         var elo_factor = 40;
-        var match = await MatchService.FindOneById(idMatch);
         for (var team of match.teams) {
             var match_result = 0;
             var scoreMyTeam = team.scores.find(sco => sco.team.id == team.id);
@@ -44,11 +43,6 @@ export class MatchController {
             team.ranking = Math.round(TeamsHelpers.SumAverageRank(team));
         }
         match.ranking = Math.round(MatchHelpers.SumAverageRank(match));
-        try {
-            await MatchService.Save(match);
-            return res.status(200).json(ResultHelpers.createReturnJson(200, "success", match));
-        } catch (ex) {
-            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
-        }
+        return match;
     }
 }

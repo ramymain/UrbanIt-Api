@@ -6,7 +6,7 @@ export class ScoreVerif extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @OneToOne(type => Match)
+    @OneToOne(type => Match, match => match.scoreVerif)
     @JoinColumn()
     match: Match;
 

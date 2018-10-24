@@ -1,7 +1,8 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, OneToOne, JoinColumn } from "typeorm";
 import { Team } from "../team/Team.model"
 import { Sport } from "../../account/sport/Sport.model"
 import { Score } from "../../score/score/Score.model"
+import { ScoreVerif } from "../../score/scoreVerif/ScoreVerif.model";
 
 @Entity("match")
 export class Match extends BaseEntity {
@@ -27,7 +28,9 @@ export class Match extends BaseEntity {
     })
     public isFill: boolean;
 
-    @OneToMany(type => Score, score => score.match)
+    @OneToMany(type => Score, score => score.match, {
+        cascade: true
+    })
     scores: Score[];
 
     @Column({
@@ -35,4 +38,10 @@ export class Match extends BaseEntity {
         default: 0
     })
     teamCount: number;
+
+    @OneToOne(type => ScoreVerif, scoreVerif => scoreVerif.match, {
+        cascade: true
+    })
+    @JoinColumn()
+    scoreVerif: ScoreVerif;
 }
