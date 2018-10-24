@@ -44,10 +44,6 @@ export class MatchController {
             team.ranking = Math.round(TeamsHelpers.SumAverageRank(team));
         }
         match.ranking = Math.round(MatchHelpers.SumAverageRank(match));
-        for (var team of match.teams) {
-            console.log(team);
-        }
-        console.log(match);
         try {
             await MatchService.Save(match);
             return res.status(200).json(ResultHelpers.createReturnJson(200, "success", match));
