@@ -12,7 +12,6 @@ import { MatchController } from "../../tunnel/match/Match.controller";
 export class ScoreController {
 
     public static async Score(req: express.Request, res: express.Response) {
-        var errors = JSON.parse("{}");
         var teams = JSON.parse(req.body.idsTeam);
         var scores = JSON.parse(req.body.scores);
         var i = 0;
@@ -51,23 +50,17 @@ export class ScoreController {
                 }
             }
         };
-        if (errors && Object.keys(errors).length > 0) {
-            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
+        if (scoreVerifCreate) {
+            match.scoreVerif = scoreVerif;
+            if (scoreVerif.isValid) {
+                match = MatchController.Ranking(match);
+            }
         }
-        else {
-            if (scoreVerifCreate) {
-                match.scoreVerif = scoreVerif;
-                if (scoreVerif.isValid){
-                    match = MatchController.Ranking(match);
-                }
-            }
-
-            try {
-                await MatchService.Save(match);
-                return res.status(201).json(ResultHelpers.createReturnJson(201, "success", match));
-            } catch (ex) {
-                return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
-            }
+        try {
+            await MatchService.Save(match);
+            return res.status(201).json(ResultHelpers.createReturnJson(201, "success", match));
+        } catch (ex) {
+            return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }
     }
 }
