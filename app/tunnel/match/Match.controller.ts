@@ -22,7 +22,7 @@ export class MatchController {
             var match_result = 0;
             var scoreMyTeam = team.scores.find(sco => sco.team.id == team.id);
             var otherTeam = match.teams.filter(te => te.id != team.id);
-            var scoreOtherTeam: Score[] = [];
+            var scoreOtherTeam: Score[] = []; 
             otherTeam.forEach(ot => ot.scores.forEach(sco => scoreOtherTeam.push(sco)));
             if (scoreOtherTeam.every(te => te.scored == scoreMyTeam.scored)) {
                 match_result = 0.5;
