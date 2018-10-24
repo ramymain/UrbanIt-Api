@@ -41,6 +41,17 @@ export class TeamsHelpers {
         return averrage;
     }
 
+    public static SumAverageRank(team: Team): number {
+        var sum = Number(0);
+        team.profiles.forEach(function (element) {
+            sum += Number(element.ranking);
+        });
+        var averrage = Number(sum) / Number(((team.profiles ? team.profiles.length : 0)));
+        team.ranking = averrage;
+
+        return averrage;
+    }
+
     public static GetTeamLeader(team: Team): Profile {
         var t;
         var max = -Infinity;

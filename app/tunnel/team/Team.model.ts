@@ -29,7 +29,9 @@ export class Team extends BaseEntity {
     @Column()
     public isFill: boolean;
 
-    @OneToMany(type => Profile, profile => profile.team)
+    @OneToMany(type => Profile, profile => profile.team, {
+        cascade: true
+    })
     profiles: Profile[];
 
     @Column()
@@ -41,6 +43,6 @@ export class Team extends BaseEntity {
     @OneToOne(type => TeamLeader, teamLeader => teamLeader.team)
     teamLeader: TeamLeader;
 
-    @OneToMany(type => Score, score => score.match)
+    @OneToMany(type => Score, score => score.team)
     scores: Score[];
 }

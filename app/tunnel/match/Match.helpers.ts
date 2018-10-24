@@ -47,6 +47,17 @@ export class MatchHelpers {
         return averrage;
     }
 
+    public static SumAverageRank(match: Match): number {
+        var sum = Number(0);
+        match.teams.forEach(function(element) {
+            sum += Number(element.ranking);
+        });
+        var averrage = Number(sum) / Number(((match.teams ? match.teams.length: 0)));
+        match.ranking = averrage;
+
+        return averrage;
+    }
+
     public static async SaveAndReturn(match: Match, team: Team, res: express.Response) {
 
         if (team.isFill) {

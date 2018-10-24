@@ -17,7 +17,9 @@ export class Match extends BaseEntity {
     @ManyToOne(type => Sport, sport => sport.matchs)
     sport: Sport;
 
-    @OneToMany(type => Team, team => team.match)
+    @OneToMany(type => Team, team => team.match, {
+        cascade: true
+    })
     teams: Team[];
 
     @Column({

@@ -9,6 +9,6 @@ export class MatchRepository extends Repository<Match> {
     }
 
     public findOneById(idMatch: number): Promise<Match> {
-        return this.manager.findOne(Match, {where: {id: idMatch}, relations: ["teams", "sport", "teams.teamLeader", "teams.teamLeader.profile"]});
+        return this.manager.findOne(Match, {where: {id: idMatch}, relations: ["teams", "teams.scores", "teams.scores.team", "teams.profiles", "sport", "teams.teamLeader", "teams.teamLeader.profile"]});
     }
 }
