@@ -6,6 +6,8 @@ import { MatchRoute } from "../app/tunnel/match/Match.route";
 import { TeamRoute } from "../app/tunnel/team/Team.route";
 import { ScoreRoute } from "../app/score/score/Score.route";
 import { SportRoute } from "../app/account/sport/Sport.route"
+import { ConversationRoute } from "../app/messaging/conversation/Conversation.route"
+import { MessageRoute } from "../app/messaging/message/Message.route"
 import { config } from "../config";
 
 interface IROUTER {
@@ -44,4 +46,12 @@ export const ROUTER: IROUTER[] = [ {
     handler: SportRoute,
     middleware: [],
     path: "/sport",
+}, {
+    handler: ConversationRoute,
+    middleware: [],
+    path: "/conversation",
+}, {
+    handler: MessageRoute,
+    middleware: [],
+    path: "/message",
 }];

@@ -57,8 +57,8 @@ export class ScoreController {
             }
         }
         try {
-            await MatchService.Save(match);
-            return res.status(201).json(ResultHelpers.createReturnJson(201, "success", match));
+            const matchResult = await MatchService.Save(match);
+            return res.status(201).json(ResultHelpers.createReturnJson(201, "success", matchResult));
         } catch (ex) {
             return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }

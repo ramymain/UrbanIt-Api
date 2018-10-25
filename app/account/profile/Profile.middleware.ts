@@ -15,7 +15,7 @@ export async function ProfileShouldntExist(req: express.Request, res: express.Re
     const idUser: number = req.body.idUser;
     const sport = await SportService.FindBySport(req.body.sport);
     const profile = await ProfileService.FindOneByUserAndSport(idUser, sport);
-    !profile ? next() : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { profile: "profile doesn't exist" }));
+    !profile ? next() : res.status(409).json(ResultHelpers.createReturnJson(409, "error", { profile: "profile already exist" }));
 }
 
 export async function CheckCreate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {

@@ -1,8 +1,9 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
 import { User } from "../user/User.model"
 import { Team } from "../../tunnel/team/Team.model"
 import { Sport } from "../sport/Sport.model"
 import { IsDefined } from "class-validator";
+import { Message } from "../../messaging/message/Message.model";
 
 @Entity("profile")
 export class Profile extends BaseEntity {
@@ -44,4 +45,7 @@ export class Profile extends BaseEntity {
 
     @ManyToOne(type => Team, team => team.match)
     team: Team;
+    
+    @OneToMany(type => Message, message => message.profile)
+    messages: Message[];
 }

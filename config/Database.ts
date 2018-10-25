@@ -8,6 +8,8 @@ import { Score } from "../app/score/score/Score.model";
 import { TeamLeader } from "../app/tunnel/teamLeader/TeamLeader.model";
 import { ScoreVerif } from "../app/score/scoreVerif/ScoreVerif.model"
 import { config, DIALECT } from "../config";
+import { Conversation } from "../app/messaging/conversation/Conversation.model";
+import { Message } from "../app/messaging/message/Message.model";
 
 export const Connection = createConnection({
     database: config.DATABASE.DB,
@@ -20,6 +22,8 @@ export const Connection = createConnection({
         Score,
         TeamLeader,
         ScoreVerif,
+        Conversation,
+        Message,
     ],
     host: config.DATABASE.SERVER,
     logging: false,

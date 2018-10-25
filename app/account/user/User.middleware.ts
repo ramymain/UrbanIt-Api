@@ -30,7 +30,7 @@ export async function CheckLoginAvailable(req: express.Request, res: express.Res
         errors.email = "email already exist";
     }
     if (errors && Object.keys(errors).length > 0) {
-        res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));
+        res.status(409).json(ResultHelpers.createReturnJson(409, "error", errors));
     }
     else {
         next();
@@ -58,7 +58,7 @@ export async function CheckCreate(req: express.Request, res: express.Response, n
         errors.lastName = "we need lastName";
     }
     if (errors && Object.keys(errors).length > 0) {
-        res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));
+        res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
     }
     else {
         next();
@@ -71,7 +71,7 @@ export async function CheckUpdate(req: express.Request, res: express.Response, n
         errors.idUser = "we need idUser";
     }
     if (errors && Object.keys(errors).length > 0) {
-        res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));
+        res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
     }
     else {
         next();
@@ -100,7 +100,7 @@ export async function CheckDelete(req: express.Request, res: express.Response, n
         errors.idUser = "we need idUser";
     }
     if (errors && Object.keys(errors).length > 0) {
-        res.status(404).json(ResultHelpers.createReturnJson(400, "error", errors));
+        res.status(400).json(ResultHelpers.createReturnJson(400, "error", errors));
     }
     else {
         next();
