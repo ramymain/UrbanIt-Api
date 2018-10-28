@@ -98,7 +98,7 @@ export class TeamsHelpers {
             }
         } else {
             console.log("ENVOYER VERS FONCTION JOINTEAM DE TEAM")
-            return res.status(200).json(ResultHelpers.createReturnJson(200, "success", { team: "you already have a team" }));
+            return res.status(409).json(ResultHelpers.createReturnJson(409, "success", { team: "you already have a team" }));
         }
     }
 
