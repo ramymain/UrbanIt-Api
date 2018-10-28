@@ -164,4 +164,11 @@ export class ProfileController {
         const countPlayer = await ProfileService.Count(sport);
         return res.status(200).json(ResultHelpers.createReturnJson(200, "success", {countPlayer}));
     }
+
+    public static async GetPosition(req: express.Request, res: express.Response) {
+        const profile: Profile = res.locals.profile;
+        var position = await ProfileService.getPosition(profile);
+        position += 1;
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", {position}));
+    }
 }

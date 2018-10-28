@@ -291,6 +291,29 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /profile/getPosition/{idProfile}:
+    get:
+      tags:
+        - profile
+      description: Returns the position of one player
+      operationId: GetPositionPlayer
+      parameters:
+        - name: idProfile
+          in: path
+          description: profile to get position
+          required: true
+          type: string
+      responses:
+        "200":
+          description: count response
+          schema:
+            properties:
+              position:
+                type: integer
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /profile/{idProfile}:
     get:
       tags:

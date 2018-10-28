@@ -36,4 +36,8 @@ export class ProfileService {
     public static Count(sport: Sport): Promise<number> {
         return getCustomRepository(ProfileRepository).countPlayer(sport);
     }
+
+    public static getPosition(profile: Profile): Promise<number> {
+        return getCustomRepository(ProfileRepository).getPosition(profile);
+    }
 }

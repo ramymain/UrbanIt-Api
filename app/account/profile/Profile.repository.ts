@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from "typeorm";
+import { EntityRepository, Repository, MoreThan } from "typeorm";
 import { Profile } from "./Profile.model";
 import { Sport } from "../sport/Sport.model";
 
@@ -31,5 +31,9 @@ export class ProfileRepository extends Repository<Profile> {
 
     public countPlayer(sport: Sport): Promise<number> {
         return this.manager.count(Profile, {where: {sport: sport}});
+    }
+
+    public getPosition(profile: Profile): Promise<number> {
+        return this.manager.count(Profile, {where: {sport: profile.sport, ranking: MoreThan(profile.ranking) }, order: {ranking: "DESC"}});
     }
 }
