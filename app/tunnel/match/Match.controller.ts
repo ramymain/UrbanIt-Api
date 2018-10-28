@@ -15,11 +15,11 @@ export class MatchController {
         return res.status(200).json(ResultHelpers.createReturnJson(200, "success", MatchList));
     }
 
-    
+
     public static async InProgress(req: express.Request, res: express.Response) {
         const sport: Sport = res.locals.sportModel;
         const countMatchInProgress = await MatchService.CountInProgress(sport);
-        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", {countMatchInProgress}));
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", { countMatchInProgress }));
     }
 
     public static Ranking(match: Match): Match {
@@ -28,7 +28,7 @@ export class MatchController {
             var match_result = 0;
             var scoreMyTeam = team.scores.find(sco => sco.team.id == team.id);
             var otherTeam = match.teams.filter(te => te.id != team.id);
-            var scoreOtherTeam: Score[] = []; 
+            var scoreOtherTeam: Score[] = [];
             otherTeam.forEach(ot => ot.scores.forEach(sco => scoreOtherTeam.push(sco)));
             if (scoreOtherTeam.every(te => te.scored == scoreMyTeam.scored)) {
                 match_result = 0.5;
@@ -44,6 +44,13 @@ export class MatchController {
                 var winning_probability = 1 / (1 + Math.pow(10, (Number(rankTeams) - Number(profile.ranking)) / 400));
                 var new_rank = Number(profile.ranking) + Number(elo_factor) * (Number(match_result) - Number(winning_probability));
                 profile.ranking = Math.round(new_rank)
+                if (match_result == 1) {
+                    profile.nbWin += 1;
+                } else if (match_result == 0.5) {
+                    profile.nbEquality += 1;
+                } else {
+                    profile.nbDefeat += 1;
+                }
             }
         }
         for (var team of match.teams) {

@@ -16,6 +16,6 @@ export class Message extends BaseEntity {
     @ManyToOne(type => Profile, profile => profile.messages)
     public profile: Profile;
 
-    @Column({ default: () => `now()` })
-    public createdAt: Date;
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
+    public createdAt: string;
 }

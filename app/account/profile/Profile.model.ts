@@ -41,11 +41,29 @@ export class Profile extends BaseEntity {
     public ranking: number;
 
     @ManyToOne(type => User, user => user.profiles)
-    user: User;
+    public user: User;
 
     @ManyToOne(type => Team, team => team.match)
-    team: Team;
+    public team: Team;
     
     @OneToMany(type => Message, message => message.profile)
-    messages: Message[];
+    public messages: Message[];
+
+    @Column({
+        type: "numeric",
+        default: 0
+    })
+    public nbWin: number
+
+    @Column({
+        type: "numeric",
+        default: 0
+    })
+    public nbDefeat: number
+
+    @Column({
+        type: "numeric",
+        default: 0
+    })
+    public nbEquality: number
 }
