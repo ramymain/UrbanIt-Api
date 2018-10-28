@@ -530,6 +530,30 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /match/inProgress/{sport}:
+    get:
+      tags:
+        - match
+      description: |
+        Returns count match in progress
+      operationId: countMatchInProgress
+      parameters:
+        - name: sport
+          in: path
+          description: sport of profile to count
+          required: true
+          type: string
+      responses:
+        "200":
+          description: count response
+          schema:
+            properties:
+              countMatchInProgress:
+                type: integer
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /sport:
     get:
       tags:

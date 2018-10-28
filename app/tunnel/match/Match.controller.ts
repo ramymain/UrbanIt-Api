@@ -1,6 +1,5 @@
 import * as express from "express";
 import { url } from "inspector";
-import { SPORTS, NBPLAYER } from "./Match.enumeration";
 import { MatchService } from "./Match.service";
 import { TeamService } from "../team/Team.service";
 import { Score } from "../../score/score/Score.model"
@@ -8,11 +7,19 @@ import { TeamsHelpers } from "../team/Teams.helpers";
 import { MatchHelpers } from "./Match.helpers";
 import { ResultHelpers } from "../../helpers/Result.helpers";
 import { Match } from "./Match.model";
+import { Sport } from "../..//account/sport/Sport.model";
 
 export class MatchController {
     public static async All(req: express.Request, res: express.Response) {
-        console.log(SPORTS.BASKET);
-        console.log(NBPLAYER.BASKET);
+        const MatchList = await MatchService.Find();
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", MatchList));
+    }
+
+    
+    public static async InProgress(req: express.Request, res: express.Response) {
+        const sport: Sport = res.locals.sportModel;
+        const countMatchInProgress = await MatchService.CountInProgress(sport);
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", {countMatchInProgress}));
     }
 
     public static Ranking(match: Match): Match {

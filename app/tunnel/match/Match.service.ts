@@ -4,6 +4,10 @@ import { Match } from "./Match.model";
 import { MatchRepository } from "./Match.repository";
 
 export class MatchService {
+    public static Find(): Promise<Match[]> {
+        return getCustomRepository(MatchRepository).find();
+    }
+
     public static FindBySportNotFill(sport: Sport): Promise<Match[]> {
         return getCustomRepository(MatchRepository).findBySportNotFill(sport);
     }
@@ -14,5 +18,9 @@ export class MatchService {
 
     public static FindOneById(idMatch: number): Promise<Match> {
         return getCustomRepository(MatchRepository).findOneById(idMatch);
+    }
+
+    public static CountInProgress(sport: Sport): Promise<number> {
+        return getCustomRepository(MatchRepository).countMatchInProgress(sport);
     }
 }
