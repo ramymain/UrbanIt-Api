@@ -237,6 +237,37 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /profile/best/{sport}/{take}/{skip}:
+    get:
+      tags:
+        - profile
+      description: Returns the best player in a sport
+      operationId: FindBest
+      parameters:
+        - name: sport
+          in: path
+          description: sport of profile to fetch
+          required: true
+          type: string
+        - name: take
+          in: path
+          description: nb By page
+          type: integer
+          default: 10
+        - name: skip
+          in: path
+          description: nb to skip
+          type: integer
+          default: 0
+      responses:
+        "200":
+          description: profile response
+          schema:
+            $ref: '#/definitions/Profile'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /profile/{idProfile}:
     get:
       tags:

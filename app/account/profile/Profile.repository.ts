@@ -25,4 +25,8 @@ export class ProfileRepository extends Repository<Profile> {
         return this.manager.remove(itemToRemove);
     }
 
+    public findBest(sport: Sport, take: number, skip: number): Promise<Profile[]> {
+        return this.manager.find(Profile, {where: {sport: sport}, order: {ranking: "DESC"}, take: take, skip: skip});
+    }
+
 }

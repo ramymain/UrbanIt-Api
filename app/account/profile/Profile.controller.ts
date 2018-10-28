@@ -8,6 +8,7 @@ import { Score } from "../../score/score/Score.model";
 import { ScoreService } from "../../score/score/Score.service";
 import { validate } from "class-validator";
 import { ResultHelpers } from '../../helpers/Result.helpers'
+import { Sport } from "../sport/Sport.model";
 
 export class ProfileController {
 
@@ -85,10 +86,10 @@ export class ProfileController {
     }
 
     public static async FindByUserAndSport(req: express.Request, res: express.Response) {
-        const idProfile: number = req.params.idProfile;
+        const idUser: number = req.params.idUser;
         const sport = res.locals.sportModel;
 
-        const profile = await ProfileService.FindOneByUserAndSport(idProfile, sport);
+        const profile = await ProfileService.FindOneByUserAndSport(idUser, sport);
         return profile ? res.status(200).json(ResultHelpers.createReturnJson(200, "success", profile)) : res.status(404).json(ResultHelpers.createReturnJson(404, "error", { profile: "profile not found"}));
     }
 
@@ -150,4 +151,11 @@ export class ProfileController {
         }
     }
     
+    public static async Best(req: express.Request, res: express.Response) {
+        const sport: Sport = res.locals.sportModel;
+        const take: number = req.params.take ? req.params.take : 10;
+        const skip: number = req.params.skip ? req.params.skip : 0;
+        const ProfileList = await ProfileService.FindBest(sport, take, skip);
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", ProfileList));
+    }
 }

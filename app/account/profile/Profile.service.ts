@@ -28,4 +28,8 @@ export class ProfileService {
     public static RemoveById(id: number): Promise<Profile> {
         return getCustomRepository(ProfileRepository).removeById(id);
     }
+
+    public static FindBest(sport: Sport, take: number, skip: number): Promise<Profile[]> {
+        return getCustomRepository(ProfileRepository).findBest(sport, take, skip);
+    }
 }
