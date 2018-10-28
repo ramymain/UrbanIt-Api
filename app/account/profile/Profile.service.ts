@@ -32,4 +32,8 @@ export class ProfileService {
     public static FindBest(sport: Sport, take: number, skip: number): Promise<Profile[]> {
         return getCustomRepository(ProfileRepository).findBest(sport, take, skip);
     }
+
+    public static Count(sport: Sport): Promise<number> {
+        return getCustomRepository(ProfileRepository).countPlayer(sport);
+    }
 }

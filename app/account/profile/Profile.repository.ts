@@ -29,4 +29,7 @@ export class ProfileRepository extends Repository<Profile> {
         return this.manager.find(Profile, {where: {sport: sport}, order: {ranking: "DESC"}, take: take, skip: skip});
     }
 
+    public countPlayer(sport: Sport): Promise<number> {
+        return this.manager.count(Profile, {where: {sport: sport}});
+    }
 }

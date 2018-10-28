@@ -268,6 +268,29 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /profile/count/{sport}:
+    get:
+      tags:
+        - profile
+      description: Returns the count player in a sport
+      operationId: CountPlayer
+      parameters:
+        - name: sport
+          in: path
+          description: sport of profile to count
+          required: true
+          type: string
+      responses:
+        "200":
+          description: count response
+          schema:
+            properties:
+              countPlayer:
+                type: integer
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /profile/{idProfile}:
     get:
       tags:

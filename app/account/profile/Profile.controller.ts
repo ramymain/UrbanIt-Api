@@ -158,4 +158,10 @@ export class ProfileController {
         const ProfileList = await ProfileService.FindBest(sport, take, skip);
         return res.status(200).json(ResultHelpers.createReturnJson(200, "success", ProfileList));
     }
+
+    public static async Count(req: express.Request, res: express.Response) {
+        const sport: Sport = res.locals.sportModel;
+        const countPlayer = await ProfileService.Count(sport);
+        return res.status(200).json(ResultHelpers.createReturnJson(200, "success", {countPlayer}));
+    }
 }
