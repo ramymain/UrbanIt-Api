@@ -45,13 +45,14 @@ export class MatchController {
                 var new_rank = Number(profile.ranking) + Number(elo_factor) * (Number(match_result) - Number(winning_probability));
                 profile.ranking = Math.round(new_rank)
                 if (match_result == 1) {
-                    profile.nbWin += 1;
+                    profile.nbWin += Number(1);
                 } else if (match_result == 0.5) {
-                    profile.nbEquality += 1;
+                    profile.nbEquality += Number(1);
                 } else {
-                    profile.nbDefeat += 1;
+                    profile.nbDefeat += Number(1);
                 }
             }
+            team.isOld = true;
         }
         for (var team of match.teams) {
             team.ranking = Math.round(TeamsHelpers.SumAverageRank(team));

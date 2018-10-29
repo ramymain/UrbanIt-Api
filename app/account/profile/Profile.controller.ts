@@ -44,7 +44,7 @@ export class ProfileController {
                 return res.status(400).json(ResultHelpers.createReturnJson(400, "error", errorsJson ));
             }
             const Result = await ProfileService.Save(profile);
-            res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result));
+            res.status(201).json(ResultHelpers.createReturnJson(201, "success", Result));
         } catch (ex) {
             return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
         }

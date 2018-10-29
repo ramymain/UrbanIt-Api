@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, OneToOne, ManyToMany, JoinTable } from "typeorm";
 import { Profile } from "../../account/profile/Profile.model"
 import { Match } from "../match/Match.model"
 import { Sport } from "../../account/sport/Sport.model"
@@ -29,9 +29,10 @@ export class Team extends BaseEntity {
     @Column()
     public isFill: boolean;
 
-    @OneToMany(type => Profile, profile => profile.team, {
+    @ManyToMany(type => Profile, profile => profile.teams, {
         cascade: true
     })
+    @JoinTable()
     profiles: Profile[];
 
     @Column()
@@ -45,4 +46,9 @@ export class Team extends BaseEntity {
 
     @OneToMany(type => Score, score => score.team)
     scores: Score[];
+
+    @Column({
+        default: false
+    })
+    public isOld: boolean;
 }

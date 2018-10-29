@@ -67,7 +67,7 @@ export class TeamsHelpers {
 
     public static async SaveAndReturn(team: Team, profile: Profile, res: express.Response) {
 
-        if (!profile.team) {
+        if ((!profile.teams && !profile.teams.length) || profile.teams.every(team => team.isOld == true)) {
             if (!team.profiles || team.profiles.length <= 0) {
                 team.ranking = profile.ranking;
                 team.profileCount = 1;
@@ -86,11 +86,12 @@ export class TeamsHelpers {
             } catch (ex) {
                 return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
-            profile.team = team;
+            profile.teams.push(team);
             try {
                 const Result = await ProfileService.Save(profile);
-                if (team.isFill) {
-                    return TeamController.JoinMatch(Result.team.id, res)
+                const teamResult = Result.teams.find(team => team.isOld == false);
+                if (team.isFill && teamResult) {
+                    return TeamController.JoinMatch(teamResult.id, res)
                 }
                 return res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result));
             } catch (ex) {

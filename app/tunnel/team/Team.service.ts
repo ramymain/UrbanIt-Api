@@ -2,6 +2,9 @@ import { getCustomRepository } from "typeorm";
 import { Team } from "./Team.model";
 import { Sport } from "../../account/sport/Sport.model";
 import { TeamRepository } from "./Team.repository";
+import { StringHelpers } from "../../helpers/String.helpers";
+var generate = require('project-name-generator');
+
 
 export class TeamService {
 
@@ -10,6 +13,9 @@ export class TeamService {
     }
 
     public static Save(team: Team): Promise<Team> {
+        if (StringHelpers.isNullOrWhitespace(team.teamName)){
+            team.teamName = generate({ words: 3 }).dashed;
+        }
         return getCustomRepository(TeamRepository).save(team);
     }
 

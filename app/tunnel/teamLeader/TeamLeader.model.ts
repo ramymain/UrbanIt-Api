@@ -1,5 +1,5 @@
 import { IsEmail, IsDefined } from "class-validator";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { Team } from "../team/Team.model"
 import { Profile } from "../../account/profile/Profile.model"
 
@@ -12,7 +12,6 @@ export class TeamLeader extends BaseEntity {
     @JoinColumn()
     team: Team;
 
-    @OneToOne(type => Profile)
-    @JoinColumn()
+    @ManyToOne(type => Profile)
     profile: Profile;
 }

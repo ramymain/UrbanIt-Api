@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, ManyToMany, JoinTable } from "typeorm";
 import { User } from "../user/User.model"
 import { Team } from "../../tunnel/team/Team.model"
 import { Sport } from "../sport/Sport.model"
@@ -43,8 +43,9 @@ export class Profile extends BaseEntity {
     @ManyToOne(type => User, user => user.profiles)
     public user: User;
 
-    @ManyToOne(type => Team, team => team.match)
-    public team: Team;
+    @ManyToMany(type => Team, team => team.profiles)
+    @JoinTable()
+    public teams: Team[];
     
     @OneToMany(type => Message, message => message.profile)
     public messages: Message[];
