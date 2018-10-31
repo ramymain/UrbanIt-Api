@@ -4,7 +4,7 @@
   "description": "kit starter node application",
   "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=development node -r ts-node/register Index.ts",
+    "start": "node -r ts-node/register Index.ts",
     "dev": "nodemon",
     "test": "cross-env NODE_ENV=test nyc mocha test/**/*.ts",
     "build": "npm run clean && tsc --outDir dist",
