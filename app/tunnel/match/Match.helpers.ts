@@ -9,6 +9,7 @@ import { ResultHelpers } from "../../helpers/Result.helpers";
 import { Profile } from "../../account/profile/Profile.model";
 import { ConversationController } from "../../messaging/conversation/Conversation.controller";
 import { ConversationService } from "../../messaging/conversation/Conversation.service";
+import { ProfileService } from "../../account/profile/Profile.service";
 
 export class MatchHelpers {
     public static Closest(matchs: Match[], num: number): Match {
@@ -61,7 +62,7 @@ export class MatchHelpers {
         return averrage;
     }
 
-    public static async SaveAndReturn(match: Match, team: Team, res: express.Response) {
+    public static async SaveAndReturn(match: Match, team: Team, res: express.Response, profileId: number) {
         if (team.isFill) {
             if (!match.teams || match.teams.length <= 0) {
                 match.ranking = team.ranking;
@@ -89,8 +90,9 @@ export class MatchHelpers {
             }
             team.match = match;
             try {
-                const Result = await TeamService.Save(team);
-                return res.status(200).json(ResultHelpers.createReturnJson(201, "success", Result))
+                await TeamService.Save(team);
+                const ProfileResult = await ProfileService.FindOneById(profileId);
+                return res.status(200).json(ResultHelpers.createReturnJson(201, "success", ProfileResult))
             } catch (ex) {
                 return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }

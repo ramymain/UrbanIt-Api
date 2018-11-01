@@ -116,7 +116,7 @@ export class ProfileController {
                 return res.status(404).json(ResultHelpers.createReturnJson(404, "error", { team: "team doesn't exist" }));
             }
             if (team.isFill){
-                return res.status(400).json(ResultHelpers.createReturnJson(400, "error", { server: "team is full" }));
+                return res.status(409).json(ResultHelpers.createReturnJson(409, "error", { server: "team is full" }));
             }
             return TeamsHelpers.SaveAndReturn(team, profile, res)
         }

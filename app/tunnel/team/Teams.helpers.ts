@@ -91,7 +91,7 @@ export class TeamsHelpers {
                 const Result = await ProfileService.Save(profile);
                 const teamResult = Result.teams.find(team => team.isOld == false);
                 if (team.isFill && teamResult) {
-                    return TeamController.JoinMatch(teamResult.id, res)
+                    return TeamController.JoinMatch(teamResult.id, res, profile.id)
                 }
                 return res.status(200).json(ResultHelpers.createReturnJson(200, "success", Result));
             } catch (ex) {

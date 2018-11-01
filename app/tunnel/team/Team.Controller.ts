@@ -68,7 +68,7 @@ export class TeamController {
         return TeamsHelpers.SaveAndReturnTeams(teamJoin, team, res);
     }
 
-    public static async JoinMatch(teamId: number, res: express.Response) {
+    public static async JoinMatch(teamId: number, res: express.Response, profileId: number) {
         const team = await TeamService.FindOneById(teamId);
         const matchs = await MatchService.FindBySportNotFill(team.sport);
         const match = MatchHelpers.Closest(matchs, team.ranking);
@@ -78,13 +78,14 @@ export class TeamController {
             if (match == null){
                 return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
-            return MatchHelpers.SaveAndReturn(match, team, res)
+            return MatchHelpers.SaveAndReturn(match, team, res, profileId)
         }
-        return MatchHelpers.SaveAndReturn(match, team, res)
+        return MatchHelpers.SaveAndReturn(match, team, res, profileId)
     }
 
     public static async JoinMatchReq(req: express.Request, res: express.Response) {
         const team = res.locals.team;
+        const profile = res.locals.profile;
         if (!team.isFill) {
             return res.status(403).json({error: "your team isn't fill"});
         }
@@ -96,9 +97,9 @@ export class TeamController {
             if (match == null){
                 return res.status(500).json(ResultHelpers.createReturnJson(500, "error", { server: "internal server error" }));
             }
-            return MatchHelpers.SaveAndReturn(match, team, res)
+            return MatchHelpers.SaveAndReturn(match, team, res, profile.id)
         }
-        return MatchHelpers.SaveAndReturn(match, team, res)
+        return MatchHelpers.SaveAndReturn(match, team, res, profile.id)
     }
 
 }
