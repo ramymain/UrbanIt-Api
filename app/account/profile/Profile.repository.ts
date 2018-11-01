@@ -13,7 +13,7 @@ export class ProfileRepository extends Repository<Profile> {
     }
 
     public findOneById(idProfile: number): Promise<Profile> {
-        return this.manager.findOne(Profile, {where: {id: idProfile}, relations: ['user', "teams", "sport", "teams.teamLeader", "teams.teamLeader.profile", "teams.profiles", "teams.match", "teams.match.teams", "teams.match.teams.profiles", "teams.match.teams.profiles.user"]});
+        return this.manager.findOne(Profile, {where: {id: idProfile}, relations: ['user', "teams", "sport", "teams.teamLeader", "teams.teamLeader.profile", "teams.profiles", "teams.match", "teams.match.teams", "teams.match.teams.profiles", "teams.match.teams.profiles.user", "teams.match.teams.teamLeader", "teams.match.teams.teamLeader.profile"]});
     }
 
     public findOneByUserAndSport(idUser: number, sport: Sport): Promise<Profile> {
