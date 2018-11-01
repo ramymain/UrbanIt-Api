@@ -97,7 +97,8 @@ export class Server {
 
     private ConfigurationSocket(){
         // Connect to Socket.io
-        this.io.sockets.on('connection', function (socket: SocketIO.Socket) {
+        var io = this.io;
+        io.sockets.on('connection', function (socket: SocketIO.Socket) {
             // Create function to send status
             // socket.join('game');
             function sendStatus(s: any) {
@@ -118,7 +119,6 @@ export class Server {
             socket.on('input', function (data: any) {
                 let name = data.name;
                 let message = data.message;
-
                 // Check for name and message
                 if (name == '' || message == '') {
                     // Send error status
@@ -126,7 +126,7 @@ export class Server {
                 } else {
                     // Insert message
                     // chat.insert({name: name, message: message}, function(){
-                    this.io.emit('output', [data]);
+                    io.emit('output', [data]);
 
                     // Send status object
                     sendStatus({
