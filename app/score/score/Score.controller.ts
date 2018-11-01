@@ -24,7 +24,8 @@ export class ScoreController {
         for (const key of Object.keys(teams)) {
             var teamId = parseInt(teams[key]);
             var score = new Score();
-            score.profile = [res.locals.profile];
+            score.profiles = [];
+            score.profiles.push(res.locals.profile);
             match.teams.forEach(function (team: Team) {
                 if (team.id == teamId) {
                     score.team = team;
@@ -33,7 +34,7 @@ export class ScoreController {
             score.scored = scores[Object.keys(scores)[i]];
             i += 1;
             var scoreTeam = scoreModels.filter(sco => sco.team.id == teamId)
-            var scoreTeamValid = scoreModels.filter(sco => sco.team.id == teamId && sco.profile.filter(profile => profile.id == res.locals.profile.id).length > 0)
+            var scoreTeamValid = scoreModels.filter(sco => sco.team.id == teamId && sco.profiles.filter(profile => profile.id == res.locals.profile.id).length > 0)
             if (scoreTeamValid.length <= 0) {
                 if (match.sport.nbTeam == (scoreTeam.length + 1)) {
                     scoreVerifCreate = true;

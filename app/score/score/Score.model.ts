@@ -13,7 +13,7 @@ export class Score extends BaseEntity {
 
     @ManyToMany(type => Profile)
     @JoinTable()
-    profile: Profile[];
+    profiles: Profile[];
 
     @ManyToOne(type => Match, match => match.scores)
     match: Match;
