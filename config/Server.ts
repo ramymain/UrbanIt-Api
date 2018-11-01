@@ -6,8 +6,6 @@ import * as methodOverride from "method-override";
 import * as morgan from "morgan";
 import { Connection } from "./Database";
 import { ROUTER } from "./Router";
-import { env } from "process";
-import { config } from "../config";
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./config/swagger.yaml');
@@ -29,7 +27,6 @@ export class Server {
         return Server.ConnectDB().then(() => {
             this.ExpressConfiguration();
             this.ConfigurationRouter();
-            // this.SocketConfiguration();
             return this.server;
         });
     }
@@ -91,51 +88,6 @@ export class Server {
                 error: err.message,
             });
             next();
-        });
-    }
-
-    private SocketConfiguration(): void {
-        const io = require('socket.io').listen(this.server);
-        // Connect to Socket.io
-        io.sockets.on('connection', function(socket: any){
-            // Create function to send status
-            // socket.join('game');
-            function sendStatus(s: any){
-                socket.emit('status', s);
-            }
-
-            // // Get chats from mongo collection
-            // chat.find().limit(100).sort({_id:1}).toArray(function(err, res){
-            //     if(err){
-            //         throw err;
-            //     }
-
-            //     // Emit the messages
-            //     socket.emit('output', res);
-            // });
-
-            // Handle input events
-            socket.on('input', function(data: any){
-                let name = data.name;
-                let message = data.message;
-
-                // Check for name and message
-                if(name == '' || message == ''){
-                    // Send error status
-                    sendStatus('Please enter a name and message');
-                } else {
-                    // Insert message
-                    // chat.insert({name: name, message: message}, function(){
-                        io.emit('output', [data]);
-
-                        // Send status object
-                        sendStatus({
-                            message: 'Message sent',
-                            clear: true
-                        });
-                    // });
-                }
-            });
         });
     }
 }
