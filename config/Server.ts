@@ -6,9 +6,8 @@ import * as methodOverride from "method-override";
 import * as morgan from "morgan";
 import { Connection } from "./Database";
 import { ROUTER } from "./Router";
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./config/swagger.yaml');
+import * as swaggerUi from "swagger-ui-express";
+import * as YAML from "yamljs";
 
 export class Server {
     private static ConnectDB(): Promise<any> {
@@ -17,14 +16,19 @@ export class Server {
 
     private readonly app: express.Application;
     private readonly server: http.Server;
+    private readonly io: SocketIO.Server;
+    private readonly swaggerDocument: any;
 
     constructor() {
         this.app = express();
         this.server = http.createServer(this.app);
+        this.io = require('socket.io')(this.server);
+        this.swaggerDocument = YAML.load('./config/swagger.yaml');
     }
 
     public Start(): Promise<http.Server> {
         return Server.ConnectDB().then(() => {
+            this.ConfigurationSocket();
             this.ExpressConfiguration();
             this.ConfigurationRouter();
             return this.server;
@@ -63,7 +67,7 @@ export class Server {
             this.app.use(route.path, route.middleware, route.handler);
         }
 
-        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(this.swaggerDocument));
 
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction): void => {
             res.status(404);
@@ -88,6 +92,50 @@ export class Server {
                 error: err.message,
             });
             next();
+        });
+    }
+
+    private ConfigurationSocket(){
+        // Connect to Socket.io
+        this.io.sockets.on('connection', function (socket: SocketIO.Socket) {
+            // Create function to send status
+            // socket.join('game');
+            function sendStatus(s: any) {
+                socket.emit('status', s);
+            }
+
+            // // Get chats from mongo collection
+            // chat.find().limit(100).sort({_id:1}).toArray(function(err, res){
+            //     if(err){
+            //         throw err;
+            //     }
+
+            //     // Emit the messages
+            //     socket.emit('output', res);
+            // });
+
+            // Handle input events
+            socket.on('input', function (data: any) {
+                let name = data.name;
+                let message = data.message;
+
+                // Check for name and message
+                if (name == '' || message == '') {
+                    // Send error status
+                    sendStatus('Please enter a name and message');
+                } else {
+                    // Insert message
+                    // chat.insert({name: name, message: message}, function(){
+                    this.io.emit('output', [data]);
+
+                    // Send status object
+                    sendStatus({
+                        message: 'Message sent',
+                        clear: true
+                    });
+                    // });
+                }
+            });
         });
     }
 }
