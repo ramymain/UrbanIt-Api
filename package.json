@@ -37,7 +37,7 @@
     "express-jwt": "^5.3.1",
     "jsonwebtoken": "^8.2.0",
     "method-override": "^2.3.10",
-    "morgan": "^1.9.0",
+    "morgan": "^1.9.1",
     "mysql": "^2.15.0",
     "os": "^0.1.1",
     "password-hash": "^1.2.2",
