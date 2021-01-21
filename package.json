@@ -43,7 +43,7 @@
     "password-hash": "^1.2.2",
     "path": "^0.12.7",
     "project-name-generator": "^2.1.5",
-    "socket.io": "^2.1.1",
+    "socket.io": "^2.4.0",
     "superagent": "^3.8.2",
     "swagger-ui-express": "^4.0.1",
     "token-extractor": "^0.1.6",
