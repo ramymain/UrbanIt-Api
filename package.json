@@ -48,7 +48,7 @@
     "swagger-ui-express": "^4.0.1",
     "token-extractor": "^0.1.6",
     "ts-node": "^7.0.0",
-    "typeorm": "^0.2.7",
+    "typeorm": "^0.2.25",
     "typescript": "^2.6.2",
     "yamljs": "^0.3.0"
   },
