@@ -33,7 +33,7 @@
     "class-validator": "^0.8.5",
     "cluster": "^0.7.7",
     "cors": "^2.8.4",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "express-jwt": "^5.3.1",
     "jsonwebtoken": "^8.2.0",
     "method-override": "^2.3.10",
